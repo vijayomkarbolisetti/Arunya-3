@@ -66,30 +66,18 @@ const FlavorSlider = () => {
   return (
     <div ref={sliderRef} className="slider-wrapper">
       <div className="flavors">
-        {flavorlists.map((flavor) => (
+        {flavorlists.map((flavor, index) => (
           <div
             key={flavor.name}
             className={`relative z-30 lg:w-[50vw] w-96 lg:h-[70vh] md:w-[90vw] md:h-[50vh] h-80 flex-none ${flavor.rotation}`}
           >
             <img
-              src={`/images/${flavor.color}-bg.svg`}
+              src={`/images/${4 + index}.jpg`}
               alt=""
-              className="absolute bottom-0"
+              className="absolute inset-0 w-full h-full object-cover"
             />
 
-            <img
-              src={`/images/${flavor.color}-drink.webp`}
-              alt=""
-              className="drinks"
-            />
-
-            <img
-              src={`/images/${flavor.color}-elements.webp`}
-              alt=""
-              className="elements"
-            />
-
-            <h1>{flavor.name}</h1>
+            <h1 className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white drop-shadow-lg">{flavor.name}</h1>
           </div>
         ))}
       </div>

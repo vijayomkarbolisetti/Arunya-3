@@ -68,12 +68,12 @@ const HeroSection = () => {
           <>
             {isMobile && (
               <img
-                src="/images/hero-bg.png"
+                src="/images/1.jpg"
                 className="absolute bottom-40 size-full object-cover"
               />
             )}
             <img
-              src="/images/hero-img.png"
+              src="/images/2.jpg"
               className="absolute bottom-0 left-1/2 -translate-x-1/2 object-auto"
             />
           </>

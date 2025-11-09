@@ -55,39 +55,33 @@ const TestimonialSection = () => {
     });
   });
 
-  const handlePlay = (index) => {
-    const video = vdRef.current[index];
-    video.play();
-  };
-
-  const handlePause = (index) => {
-    const video = vdRef.current[index];
-    video.pause();
-  };
+  const villaImages = [
+    { img: '/images/4.jpg', name: 'Villa View 1', rotation: 'rotate-z-[-10deg]', translation: 'translate-y-[-5%]' },
+    { img: '/images/6.jpg', name: 'Villa View 2', rotation: 'rotate-z-[4deg]', translation: '' },
+    { img: '/images/8.jpg', name: 'Villa View 3', rotation: 'rotate-z-[-4deg]', translation: 'translate-y-[-5%]' },
+    { img: '/images/9.jpg', name: 'Villa View 4', rotation: 'rotate-z-[4deg]', translation: 'translate-y-[5%]' },
+    { img: '/images/12.jpg', name: 'Villa View 5', rotation: 'rotate-z-[-10deg]', translation: '' },
+  ];
 
   return (
     <section className="testimonials-section">
       <div className="absolute size-full flex flex-col items-center pt-[5vw]">
-        <h1 className="text-black first-title">What Our</h1>
-        <h1 className="text-light-brown sec-title">Residents</h1>
-        <h1 className="text-black third-title">Say</h1>
+        <h1 className="text-black first-title">Explore Our</h1>
+        <h1 className="text-light-brown sec-title">Luxury</h1>
+        <h1 className="text-black third-title">Villas</h1>
       </div>
 
       <div className="pin-box">
-        {cards.map((card, index) => (
+        {villaImages.map((card, index) => (
           <div
             key={index}
             className={`vd-card ${card.translation} ${card.rotation}`}
-            onMouseEnter={() => handlePlay(index)}
-            onMouseLeave={() => handlePause(index)}
+            style={{ height: '70vh', minHeight: '500px' }}
           >
-            <video
-              ref={(el) => (vdRef.current[index] = el)}
-              src={card.src}
-              playsInline
-              muted
-              loop
-              className="size-full object-cover"
+            <img
+              src={card.img}
+              alt={card.name}
+              className="size-full object-cover rounded-lg"
             />
           </div>
         ))}
