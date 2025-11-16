@@ -8,6 +8,21 @@ const HeroSection = () => {
     query: "(max-width: 1024px)",
   });
 
+  const scrollToFlavors = () => {
+    const element = document.getElementById("flavors");
+    if (element) {
+      // Get the element's position
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      // Scroll to a position slightly before the section to trigger animations
+      const offsetPosition = elementPosition - window.innerHeight * 0.3; // 30% from top
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
+
   useGSAP(() => {
     const titleSplit = SplitText.create(".hero-title", {
       type: "chars",
@@ -97,7 +112,7 @@ const HeroSection = () => {
             Experience sunrise-facing luxury villas at Greenrich Highlands. 322
             exclusive homes nestled in 45 acres of tranquil paradise.
           </h2>
-          <button className="hero-button">Explore Villas</button>
+          <button className="hero-button" onClick={scrollToFlavors}>Explore Villas</button>
         </div>
       </div>
     </section>
