@@ -58,7 +58,7 @@ const HeroSection = () => {
   });
 
   return (
-    <section className="bg-main-bg w-full overflow-hidden">
+    <section id="hero" className="bg-main-bg w-full overflow-hidden">
       <div className="hero-container">
         {isTablet ? (
           <img

@@ -44,7 +44,7 @@ const BenefitSection = () => {
   });
 
   return (
-    <section className="benefit-section">
+    <section id="benefits" className="benefit-section">
       <div className="w-full mx-auto pt-12 sm:pt-16 md:pt-20 px-4 sm:px-6 md:px-8">
         <div className="col-center">
           <p>

@@ -45,7 +45,7 @@ const ComparisonSection = () => {
   }, []);
 
   return (
-    <section className="comparison-section min-h-dvh bg-milk w-full overflow-hidden flex flex-col justify-center items-center px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 py-16 sm:py-20 md:py-24">
+    <section id="comparison" className="comparison-section min-h-dvh bg-milk w-full overflow-hidden flex flex-col justify-center items-center px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 py-16 sm:py-20 md:py-24">
       {/* Title */}
       <div className="comparison-title text-center mb-8 sm:mb-12 md:mb-16">
         <h1 className="general-title text-dark-brown">East vs West</h1>

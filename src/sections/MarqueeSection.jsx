@@ -31,7 +31,7 @@ const MarqueeSection = () => {
   }, []);
 
   return (
-    <section className="marquee-section min-h-[60vh] bg-dark-brown w-full overflow-hidden flex flex-col justify-center items-center px-4 sm:px-6 md:px-8 py-16 sm:py-20 md:py-24">
+    <section id="partners" className="marquee-section min-h-[60vh] bg-dark-brown w-full overflow-hidden flex flex-col justify-center items-center px-4 sm:px-6 md:px-8 py-16 sm:py-20 md:py-24">
       {/* Title */}
       <div className="marquee-title text-center mb-12 sm:mb-16 md:mb-20">
         <h2 className="text-milk text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tight">

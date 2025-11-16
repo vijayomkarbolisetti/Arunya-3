@@ -2,7 +2,7 @@ import theme from "../constants/theme";
 
 const FooterSection = () => {
   return (
-    <section className="footer-section">
+    <section id="footer" className="footer-section">
       {/* <img
         src="/images/footer-dip.png"
         alt=""

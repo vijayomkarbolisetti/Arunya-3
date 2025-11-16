@@ -3,7 +3,7 @@ import FlavorSliderMobile from "../components/FlavorSliderMobile";
 
 const FlavorSectionMobile = () => {
   return (
-    <section className="py-8 px-4 bg-white">
+    <section id="flavors" className="py-8 px-4 bg-white">
       <FlavorTitleMobile />
       <FlavorSliderMobile />
     </section>
