@@ -12,13 +12,14 @@ const HeroSection = () => {
     const element = document.getElementById("flavors");
     if (element) {
       // Get the element's position
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      const elementPosition =
+        element.getBoundingClientRect().top + window.pageYOffset;
       // Scroll to a position slightly before the section to trigger animations
       const offsetPosition = elementPosition - window.innerHeight * 0.3; // 30% from top
-      
+
       window.scrollTo({
         top: offsetPosition,
-        behavior: "smooth"
+        behavior: "smooth",
       });
     }
   };
@@ -86,6 +87,7 @@ const HeroSection = () => {
             src="/videos/hero-bg.webm"
             autoPlay
             muted
+            loop
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
           />
@@ -98,7 +100,7 @@ const HeroSection = () => {
               Halcyon Lifestyle Redefined
             </h1>
           </div>
-          <div
+          {/* <div
             style={{
               clipPath: "polygon(50% 0, 50% 0, 50% 100%, 50% 100%)",
             }}
@@ -107,12 +109,14 @@ const HeroSection = () => {
             <div className="hero-subtitle">
               <h1>Aarunya Villas</h1>
             </div>
-          </div>
+          </div> */}
           <h2 className="text-white">
             Experience sunrise-facing luxury villas at Greenrich Highlands. 322
             exclusive homes nestled in 45 acres of tranquil paradise.
           </h2>
-          <button className="hero-button" onClick={scrollToFlavors}>Explore Villas</button>
+          <button className="hero-button" onClick={scrollToFlavors}>
+            Explore Villas
+          </button>
         </div>
       </div>
     </section>

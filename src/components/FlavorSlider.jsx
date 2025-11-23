@@ -3,13 +3,25 @@ import { flavorlists } from "../constants";
 import gsap from "gsap";
 import { useRef } from "react";
 import { useMediaQuery } from "react-responsive";
+import { useNavigate } from "react-router-dom";
 
 const FlavorSlider = () => {
   const sliderRef = useRef();
+  const navigate = useNavigate();
 
   const isTablet = useMediaQuery({
     query: "(max-width: 1024px)",
   });
+
+  // Convert villa name to URL-friendly ID
+  const getVillaId = (name) => {
+    return name.toLowerCase().replace(/\s+/g, "-");
+  };
+
+  const handleVillaClick = (flavor) => {
+    const villaId = getVillaId(flavor.name);
+    navigate(`/villa/${villaId}`);
+  };
 
   useGSAP(() => {
     // Force reset all elements to initial positions
@@ -50,27 +62,24 @@ const FlavorSlider = () => {
         {flavorlists.map((flavor) => (
           <div
             key={flavor.name}
-            className={`relative z-30 w-[85vw] sm:w-96 md:w-[90vw] lg:w-[50vw] h-72 sm:h-80 md:h-[50vh] lg:h-[70vh] flex-none ${flavor.rotation} overflow-hidden rounded-2xl sm:rounded-3xl`}
+            onClick={() => handleVillaClick(flavor)}
+            className={`relative z-30 w-[85vw] sm:w-96 md:w-[90vw] lg:w-[50vw] h-72 sm:h-80 md:h-[50vh] lg:h-[70vh] flex-none ${flavor.rotation} overflow-hidden rounded-2xl sm:rounded-3xl cursor-pointer group transition-all duration-300 hover:scale-105`}
           >
-            {/* <img
-              src={`/images/${flavor.color}-bg.svg`}
-              alt=""
-              className="absolute bottom-0"
-            /> */}
+            {/* Overlay on hover */}
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 z-20" />
+            
+            {/* Click indicator */}
+            <div className="absolute top-4 right-4 z-30 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              View Details →
+            </div>
 
             <img
               src={`/images/${flavor.color}.jpg`}
               alt={flavor.name}
-              className="drinks"
+              className="drinks transition-transform duration-300 group-hover:scale-110"
             />
 
-            {/* <img
-              src={`/images/${flavor.color}-elements.webp`}
-              alt=""
-              className="elements"
-            /> */}
-
-            <h1>{flavor.name}</h1>
+            <h1 className="transition-transform duration-300 group-hover:scale-105">{flavor.name}</h1>
           </div>
         ))}
       </div>

@@ -1,18 +1,31 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const menuItems = [
-    { label: "Home", id: "hero" },
+    { label: "Home", id: "hero", path: "/" },
+    { label: "Clubhouse", id: "clubhouse", path: "/clubhouse" },
   ];
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-      setIsMenuOpen(false);
+  const handleNavigation = (item) => {
+    if (item.path === "/") {
+      if (location.pathname !== "/") {
+        navigate("/");
+        // Allow time for navigation before scrolling
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+        }, 100);
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    } else {
+      navigate(item.path);
     }
+    setIsMenuOpen(false);
   };
 
   return (
@@ -21,18 +34,31 @@ const NavBar = () => {
         <img
           src="/images/nav-logo.svg"
           alt="Aarunya Villas - Greenrich Highlands"
-          className="w-16 sm:w-18 md:w-20 lg:w-24 h-auto"
+          className="w-16 sm:w-18 md:w-20 lg:w-24 h-auto cursor-pointer"
+          onClick={() => handleNavigation({ path: "/" })}
         />
-        
+
         {/* Hamburger Menu Button */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="flex flex-col gap-1.5 w-8 h-8 justify-center items-center cursor-pointer group"
           aria-label="Toggle menu"
         >
-          <span className={`block h-0.5 w-6 bg-gray-800 transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-          <span className={`block h-0.5 w-6 bg-gray-800 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
-          <span className={`block h-0.5 w-6 bg-gray-800 transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+          <span
+            className={`block h-0.5 w-6 bg-gray-800 transition-all duration-300 ${
+              isMenuOpen ? "rotate-45 translate-y-2" : ""
+            }`}
+          ></span>
+          <span
+            className={`block h-0.5 w-6 bg-gray-800 transition-all duration-300 ${
+              isMenuOpen ? "opacity-0" : ""
+            }`}
+          ></span>
+          <span
+            className={`block h-0.5 w-6 bg-gray-800 transition-all duration-300 ${
+              isMenuOpen ? "-rotate-45 -translate-y-2" : ""
+            }`}
+          ></span>
         </button>
       </nav>
 
@@ -51,25 +77,18 @@ const NavBar = () => {
           ×
         </button>
 
-        {/* Logo in Drawer */}
-        <div className="pt-12 px-8 pb-6 border-b border-teal-600/30">
-          <img
-            src="/images/logo.png"
-            alt="Logo"
-            className="w-32 h-auto opacity-90"
-          />
-        </div>
-
         {/* Menu Items */}
-        <nav className="flex flex-col py-8 px-8">
+        <nav className="flex flex-col pt-24 px-8 pb-8">
           {menuItems.map((item, index) => (
             <button
-              key={item.id}
-              onClick={() => scrollToSection(item.id)}
+              key={item.label}
+              onClick={() => handleNavigation(item)}
               className="text-left text-white text-lg font-light py-4 border-b border-teal-600/20 hover:bg-teal-600/20 hover:pl-4 transition-all duration-300 tracking-wide"
               style={{
                 animationDelay: `${index * 50}ms`,
-                animation: isMenuOpen ? 'slideIn 0.4s ease-out forwards' : 'none',
+                animation: isMenuOpen
+                  ? "slideIn 0.4s ease-out forwards"
+                  : "none",
                 opacity: isMenuOpen ? 1 : 0,
               }}
             >

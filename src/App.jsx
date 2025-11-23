@@ -1,3 +1,4 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import HeroSection from "./sections/HeroSection";
 import { ScrollSmoother, ScrollTrigger } from "gsap/all";
@@ -13,10 +14,13 @@ import FooterSection from "./sections/FooterSection";
 import ComparisonSection from "./sections/ComparisonSection";
 import MarqueeSection from "./sections/MarqueeSection";
 import { useMediaQuery } from "react-responsive";
+import VillaDetail from "./pages/VillaDetail";
+import ClubhousePage from "./pages/ClubhousePage";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
-const App = () => {
+// Home Page Component
+const HomePage = () => {
   const isDesktop = useMediaQuery({
     query: "(min-width: 1025px)",
   });
@@ -65,6 +69,19 @@ const App = () => {
         </>
       )}
     </main>
+  );
+};
+
+// Main App Component with Routing
+const App = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/villa/:villaId" element={<VillaDetail />} />
+        <Route path="/clubhouse" element={<ClubhousePage />} />
+      </Routes>
+    </Router>
   );
 };
 
