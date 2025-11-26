@@ -8,6 +8,8 @@ import { SplitText } from "gsap/all";
 
 gsap.registerPlugin(ScrollTrigger);
 
+import { Link } from "react-router-dom";
+
 const ClubhousePage = () => {
   const containerRef = useRef(null);
   const floorsContainerRef = useRef(null);
@@ -185,6 +187,13 @@ const ClubhousePage = () => {
       className="w-full bg-main-bg min-h-screen overflow-hidden"
     >
       <NavBar />
+      
+      <Link 
+        to="/" 
+        className="fixed top-28 sm:top-36 left-4 sm:left-6 z-50 bg-milk/80 backdrop-blur-md shadow-sm rounded-md px-4 py-3 sm:py-3.5 text-dark-brown font-bold uppercase text-xs sm:text-sm tracking-widest hover:bg-white transition-all flex items-center gap-2 group"
+      >
+        <span className="group-hover:-translate-x-1 transition-transform duration-300">←</span> Back to Home
+      </Link>
 
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">

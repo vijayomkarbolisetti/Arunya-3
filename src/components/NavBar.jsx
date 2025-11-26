@@ -9,6 +9,7 @@ const NavBar = () => {
   const menuItems = [
     { label: "Home", id: "hero", path: "/" },
     { label: "Clubhouse", id: "clubhouse", path: "/clubhouse" },
+    { label: "Central Park", id: "central-park", path: "/central-park" },
   ];
 
   const handleNavigation = (item) => {
@@ -30,37 +31,38 @@ const NavBar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 z-50 m-3 sm:m-5 md:m-7 lg:m-9 rounded-md px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 bg-milk/80 backdrop-blur-md shadow-sm flex items-center justify-between w-[calc(100%-1.5rem)] sm:w-[calc(100%-2.5rem)] md:w-[calc(100%-3.5rem)] lg:w-[calc(100%-4.5rem)]">
+      {/* Logo Container */}
+      <div className="fixed top-4 sm:top-6 left-4 sm:left-6 z-50 bg-milk/80 backdrop-blur-md shadow-sm rounded-md p-2 sm:p-2.5">
         <img
           src="/images/nav-logo.svg"
           alt="Aarunya Villas - Greenrich Highlands"
           className="w-16 sm:w-18 md:w-20 lg:w-24 h-auto cursor-pointer"
           onClick={() => handleNavigation({ path: "/" })}
         />
+      </div>
 
-        {/* Hamburger Menu Button */}
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="flex flex-col gap-1.5 w-8 h-8 justify-center items-center cursor-pointer group"
-          aria-label="Toggle menu"
-        >
-          <span
-            className={`block h-0.5 w-6 bg-gray-800 transition-all duration-300 ${
-              isMenuOpen ? "rotate-45 translate-y-2" : ""
-            }`}
-          ></span>
-          <span
-            className={`block h-0.5 w-6 bg-gray-800 transition-all duration-300 ${
-              isMenuOpen ? "opacity-0" : ""
-            }`}
-          ></span>
-          <span
-            className={`block h-0.5 w-6 bg-gray-800 transition-all duration-300 ${
-              isMenuOpen ? "-rotate-45 -translate-y-2" : ""
-            }`}
-          ></span>
-        </button>
-      </nav>
+      {/* Hamburger Menu Button Container */}
+      <button
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className="fixed top-4 sm:top-6 right-4 sm:right-6 z-50 bg-milk/80 backdrop-blur-md shadow-sm rounded-md p-2 sm:p-2.5 w-12 h-12 sm:w-14 sm:h-14 flex flex-col gap-1.5 justify-center items-center cursor-pointer group"
+        aria-label="Toggle menu"
+      >
+        <span
+          className={`block h-0.5 w-6 bg-gray-800 transition-all duration-300 ${
+            isMenuOpen ? "rotate-45 translate-y-2" : ""
+          }`}
+        ></span>
+        <span
+          className={`block h-0.5 w-6 bg-gray-800 transition-all duration-300 ${
+            isMenuOpen ? "opacity-0" : ""
+          }`}
+        ></span>
+        <span
+          className={`block h-0.5 w-6 bg-gray-800 transition-all duration-300 ${
+            isMenuOpen ? "-rotate-45 -translate-y-2" : ""
+          }`}
+        ></span>
+      </button>
 
       {/* Side Drawer */}
       <div

@@ -58,7 +58,7 @@ body::-webkit-scrollbar {
   }
 
   .general-title {
-    @apply 2xl:text-[7.5rem] xl:text-[6rem] lg:text-7xl md:text-6xl sm:text-5xl text-4xl font-bold uppercase leading-[1.1] tracking-tight z-50;
+    @apply 2xl:text-[7.5rem] xl:text-[6rem] lg:text-7xl md:text-6xl sm:text-5xl text-4xl font-bold uppercase leading-[1.1] tracking-tight;
   }
 }
 
@@ -132,7 +132,7 @@ body::-webkit-scrollbar {
     @apply min-h-dvh bg-milk w-full overflow-x-hidden;
 
     .flavor-text-scroll {
-      @apply rotate-[-3deg] translate-y-0 sm:translate-y-5 border-4 sm:border-[.5vw] border-milk absolute z-10 max-w-[90%];
+      @apply rotate-[-3deg] translate-y-0 sm:translate-y-5 border-4 sm:border-[.5vw] border-milk absolute z-50 whitespace-nowrap;
     }
 
     .first-text-split h1 {

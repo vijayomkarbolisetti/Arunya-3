@@ -11,11 +11,14 @@ import NutritionSection from "./sections/NutritionSection";
 import BenefitSection from "./sections/BenefitSection";
 import TestimonialSection from "./sections/TestimonialSection";
 import FooterSection from "./sections/FooterSection";
-import ComparisonSection from "./sections/ComparisonSection";
+
 import MarqueeSection from "./sections/MarqueeSection";
 import { useMediaQuery } from "react-responsive";
 import VillaDetail from "./pages/VillaDetail";
 import ClubhousePage from "./pages/ClubhousePage";
+import ClubhouseSection from "./sections/ClubhouseSection";
+import CentralParkPage from "./pages/CentralParkPage";
+import CentralParkSection from "./sections/CentralParkSection";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -45,7 +48,9 @@ const HomePage = () => {
             {/* <MessageSection /> */}
             <FlavorSection />
             <NutritionSection />
-            <ComparisonSection />
+            <ClubhouseSection />
+            <CentralParkSection />
+
             <MarqueeSection />
 
             <div>
@@ -62,7 +67,9 @@ const HomePage = () => {
           <MessageSection />
           <FlavorSectionMobile />
           <NutritionSection />
-          <ComparisonSection />
+          <ClubhouseSection />
+          <CentralParkSection />
+
           <MarqueeSection />
 
           <FooterSection />
@@ -80,6 +87,7 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/villa/:villaId" element={<VillaDetail />} />
         <Route path="/clubhouse" element={<ClubhousePage />} />
+        <Route path="/central-park" element={<CentralParkPage />} />
       </Routes>
     </Router>
   );

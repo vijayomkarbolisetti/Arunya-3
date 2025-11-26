@@ -37,7 +37,7 @@ const FlavorSlider = () => {
     }
 
     if (!isTablet && sliderRef.current) {
-      const scrollAmount = sliderRef.current.scrollWidth - window.innerWidth;
+      const scrollAmount = sliderRef.current.scrollWidth - sliderRef.current.offsetWidth;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -63,7 +63,7 @@ const FlavorSlider = () => {
           <div
             key={flavor.name}
             onClick={() => handleVillaClick(flavor)}
-            className={`relative z-30 w-[85vw] sm:w-96 md:w-[90vw] lg:w-[50vw] h-72 sm:h-80 md:h-[50vh] lg:h-[70vh] flex-none ${flavor.rotation} overflow-hidden rounded-2xl sm:rounded-3xl cursor-pointer group transition-all duration-300 hover:scale-105`}
+            className={`relative z-30 w-[85vw] sm:w-96 md:w-[90vw] lg:w-[40vw] h-72 sm:h-80 md:h-[50vh] lg:h-[60vh] flex-none ${flavor.rotation} overflow-hidden rounded-2xl sm:rounded-3xl cursor-pointer group transition-all duration-300 hover:scale-105`}
           >
             {/* Overlay on hover */}
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 z-20" />

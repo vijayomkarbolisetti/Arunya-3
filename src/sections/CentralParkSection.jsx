@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ClubhouseSection = () => {
+const CentralParkSection = () => {
   const containerRef = useRef(null);
 
   useGSAP(
@@ -20,14 +20,14 @@ const ClubhouseSection = () => {
         },
       });
 
-      tl.from(".clubhouse-title", {
+      tl.from(".park-title", {
         y: 100,
         opacity: 0,
         duration: 1,
         ease: "power4.out",
       })
         .from(
-          ".clubhouse-desc",
+          ".park-desc",
           {
             y: 50,
             opacity: 0,
@@ -37,7 +37,7 @@ const ClubhouseSection = () => {
           "-=0.6"
         )
         .from(
-          ".amenity-card",
+          ".park-card",
           {
             y: 100,
             opacity: 0,
@@ -48,7 +48,7 @@ const ClubhouseSection = () => {
           "-=0.6"
         )
         .from(
-          ".cta-button",
+          ".park-cta-button",
           {
             scale: 0.8,
             opacity: 0,
@@ -61,55 +61,54 @@ const ClubhouseSection = () => {
     { scope: containerRef }
   );
 
-  const amenities = [
+  const highlights = [
     {
-      title: "Infinity Pool",
+      title: "Bethesda Fountain",
       image:
-        "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1568515387631-8b650bbcdb90?w=800&h=600&fit=crop",
     },
     {
-      title: "Modern Gym",
+      title: "Bow Bridge",
       image:
-        "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=800&h=600&fit=crop",
     },
     {
-      title: "Indoor Games",
+      title: "The Great Lawn",
       image:
-        "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1555109307-f7d9da25c244?w=800&h=600&fit=crop",
     },
   ];
 
   return (
     <section
       ref={containerRef}
-      className="relative w-full min-h-screen bg-dark-brown text-milk py-20 px-4 sm:px-6 md:px-12 overflow-hidden flex flex-col justify-center items-center"
+      className="relative w-full min-h-screen bg-gradient-to-b from-emerald-900 to-emerald-950 text-milk py-20 px-4 sm:px-6 md:px-12 overflow-hidden flex flex-col justify-center items-center"
     >
-      {/* Background Elements */}
       {/* Background Image with Mask */}
       <div className="absolute inset-0 w-full h-full z-0">
         <img
-          src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&h=1080&fit=crop"
-          alt="Clubhouse Background"
+          src="https://images.unsplash.com/photo-1568515387631-8b650bbcdb90?w=1920&h=1080&fit=crop"
+          alt="Central Park Background"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/60" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col items-center">
-        <h2 className="clubhouse-title text-5xl md:text-7xl lg:text-8xl font-bold uppercase text-center mb-6 tracking-tight">
-          The Clubhouse
+        <h2 className="park-title text-5xl md:text-7xl lg:text-8xl font-bold uppercase text-center mb-6 tracking-tight">
+          Central Park
         </h2>
-        <p className="clubhouse-desc text-lg md:text-xl text-center max-w-2xl mb-16 opacity-80 font-light leading-relaxed">
-          Discover a world of leisure and luxury. From our state-of-the-art
-          gymnasium to the serene infinity pool, every corner is designed for your
-          wellness and enjoyment.
+        <p className="park-desc text-lg md:text-xl text-center max-w-2xl mb-16 opacity-80 font-light leading-relaxed">
+          Discover America's most iconic urban oasis. From historic landmarks to
+          serene landscapes, Central Park offers 843 acres of natural beauty in
+          the heart of Manhattan.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full mb-16">
-          {amenities.map((item, index) => (
+          {highlights.map((item, index) => (
             <div
               key={index}
-              className="amenity-card group relative aspect-[4/5] overflow-hidden rounded-2xl cursor-pointer"
+              className="park-card group relative aspect-[4/5] overflow-hidden rounded-2xl cursor-pointer"
             >
               <img
                 src={item.image}
@@ -121,15 +120,18 @@ const ClubhouseSection = () => {
                 <h3 className="text-2xl font-bold uppercase tracking-wider">
                   {item.title}
                 </h3>
-                <div className="w-12 h-1 bg-light-brown mt-4 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                <div className="w-12 h-1 bg-emerald-400 mt-4 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
               </div>
             </div>
           ))}
         </div>
 
-        <Link to="/clubhouse" className="cta-button group relative inline-flex items-center gap-4 px-8 py-4 bg-light-brown text-dark-brown rounded-full overflow-hidden transition-all hover:bg-milk hover:scale-105">
+        <Link
+          to="/central-park"
+          className="park-cta-button group relative inline-flex items-center gap-4 px-8 py-4 bg-emerald-500 text-white rounded-full overflow-hidden transition-all hover:bg-emerald-400 hover:scale-105"
+        >
           <span className="relative z-10 font-bold uppercase tracking-widest text-sm sm:text-base">
-            Explore Clubhouse
+            Explore Central Park
           </span>
           <span className="relative z-10 text-xl group-hover:translate-x-1 transition-transform duration-300">
             →
@@ -141,4 +143,5 @@ const ClubhouseSection = () => {
   );
 };
 
-export default ClubhouseSection;
+export default CentralParkSection;
+
