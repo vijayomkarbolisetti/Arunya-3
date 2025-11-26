@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [expandedMenus, setExpandedMenus] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -10,23 +11,82 @@ const NavBar = () => {
     { label: "Home", id: "hero", path: "/" },
     { label: "Clubhouse", id: "clubhouse", path: "/clubhouse" },
     { label: "Central Park", id: "central-park", path: "/central-park" },
+    {
+      label: "Plans",
+      id: "plans",
+      hasSubmenu: true,
+      submenu: [
+        {
+          label: "Type A",
+          id: "type-a",
+          hasSubmenu: true,
+          submenu: [
+            {
+              label: "East",
+              id: "type-a-east",
+              hasSubmenu: true,
+              submenu: [
+                { label: "East - 1", id: "type-a-east-1", path: "/plans/type-a/east-1" },
+                { label: "East - 2", id: "type-a-east-2", path: "/plans/type-a/east-2" },
+              ],
+            },
+            {
+              label: "West",
+              id: "type-a-west",
+              hasSubmenu: true,
+              submenu: [
+                { label: "West - 1", id: "type-a-west-1", path: "/plans/type-a/west-1" },
+                { label: "West - 2", id: "type-a-west-2", path: "/plans/type-a/west-2" },
+              ],
+            },
+          ],
+        },
+        {
+          label: "Type B",
+          id: "type-b",
+          hasSubmenu: true,
+          submenu: [
+            { label: "East", id: "type-b-east", path: "/plans/type-b/east" },
+            { label: "West", id: "type-b-west", path: "/plans/type-b/west" },
+          ],
+        },
+        {
+          label: "Type C",
+          id: "type-c",
+          hasSubmenu: true,
+          submenu: [
+            { label: "East", id: "type-c-east", path: "/plans/type-c/east" },
+            { label: "West", id: "type-c-west", path: "/plans/type-c/west" },
+          ],
+        },
+      ],
+    },
   ];
+
+  const toggleSubmenu = (id) => {
+    setExpandedMenus((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   const handleNavigation = (item) => {
     if (item.path === "/") {
       if (location.pathname !== "/") {
         navigate("/");
-        // Allow time for navigation before scrolling
         setTimeout(() => {
           window.scrollTo(0, 0);
         }, 100);
       } else {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
-    } else {
+    } else if (item.path) {
       navigate(item.path);
     }
-    setIsMenuOpen(false);
+    if (!item.hasSubmenu) {
+      setIsMenuOpen(false);
+      setExpandedMenus({});
+    }
   };
 
   return (
@@ -43,7 +103,10 @@ const NavBar = () => {
 
       {/* Hamburger Menu Button Container */}
       <button
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        onClick={() => {
+          setIsMenuOpen(!isMenuOpen);
+          if (isMenuOpen) setExpandedMenus({});
+        }}
         className="fixed top-4 sm:top-6 right-4 sm:right-6 z-50 bg-milk/80 backdrop-blur-md shadow-sm rounded-md p-2 sm:p-2.5 w-12 h-12 sm:w-14 sm:h-14 flex flex-col gap-1.5 justify-center items-center cursor-pointer group"
         aria-label="Toggle menu"
       >
@@ -72,7 +135,10 @@ const NavBar = () => {
       >
         {/* Close Button */}
         <button
-          onClick={() => setIsMenuOpen(false)}
+          onClick={() => {
+            setIsMenuOpen(false);
+            setExpandedMenus({});
+          }}
           className="absolute top-6 right-6 text-white text-3xl hover:rotate-90 transition-transform duration-300"
           aria-label="Close menu"
         >
@@ -80,22 +146,98 @@ const NavBar = () => {
         </button>
 
         {/* Menu Items */}
-        <nav className="flex flex-col pt-24 px-8 pb-8">
+        <nav className="flex flex-col pt-24 px-8 pb-8 overflow-y-auto max-h-[calc(100vh-200px)]">
           {menuItems.map((item, index) => (
-            <button
-              key={item.label}
-              onClick={() => handleNavigation(item)}
-              className="text-left text-white text-lg font-light py-4 border-b border-teal-600/20 hover:bg-teal-600/20 hover:pl-4 transition-all duration-300 tracking-wide"
-              style={{
-                animationDelay: `${index * 50}ms`,
-                animation: isMenuOpen
-                  ? "slideIn 0.4s ease-out forwards"
-                  : "none",
-                opacity: isMenuOpen ? 1 : 0,
-              }}
-            >
-              {item.label}
-            </button>
+            <div key={item.id}>
+              <button
+                onClick={() =>
+                  item.hasSubmenu
+                    ? toggleSubmenu(item.id)
+                    : handleNavigation(item)
+                }
+                className="w-full text-left text-white text-lg font-light py-4 border-b border-teal-600/20 hover:bg-teal-600/20 hover:pl-4 transition-all duration-300 tracking-wide flex items-center justify-between"
+                style={{
+                  animationDelay: `${index * 50}ms`,
+                  animation: isMenuOpen
+                    ? "slideIn 0.4s ease-out forwards"
+                    : "none",
+                  opacity: isMenuOpen ? 1 : 0,
+                }}
+              >
+                <span>{item.label}</span>
+                {item.hasSubmenu && (
+                  <span className="text-xl font-light">
+                    {expandedMenus[item.id] ? "−" : "+"}
+                  </span>
+                )}
+              </button>
+
+              {/* Level 1 Submenu */}
+              {item.hasSubmenu && expandedMenus[item.id] && (
+                <div className="pl-4 border-l-2 border-teal-400/30 ml-2">
+                  {item.submenu.map((subItem) => (
+                    <div key={subItem.id}>
+                      <button
+                        onClick={() =>
+                          subItem.hasSubmenu
+                            ? toggleSubmenu(subItem.id)
+                            : handleNavigation(subItem)
+                        }
+                        className="w-full text-left text-white/90 text-lg font-light py-3 border-b border-teal-600/10 hover:bg-teal-600/10 hover:pl-2 transition-all duration-300 flex items-center justify-between"
+                      >
+                        <span>{subItem.label}</span>
+                        {subItem.hasSubmenu && (
+                          <span className="text-lg font-light">
+                            {expandedMenus[subItem.id] ? "−" : "+"}
+                          </span>
+                        )}
+                      </button>
+
+                      {/* Level 2 Submenu */}
+                      {subItem.hasSubmenu && expandedMenus[subItem.id] && (
+                        <div className="pl-4 border-l-2 border-teal-400/30 ml-2">
+                          {subItem.submenu.map((subSubItem) => (
+                            <div key={subSubItem.id}>
+                              <button
+                                onClick={() =>
+                                  subSubItem.hasSubmenu
+                                    ? toggleSubmenu(subSubItem.id)
+                                    : handleNavigation(subSubItem)
+                                }
+                                className="w-full text-left text-white/85 text-base font-light py-3 border-b border-teal-600/10 hover:bg-teal-600/10 hover:pl-2 transition-all duration-300 flex items-center justify-between"
+                              >
+                                <span>{subSubItem.label}</span>
+                                {subSubItem.hasSubmenu && (
+                                  <span className="text-base font-light">
+                                    {expandedMenus[subSubItem.id] ? "−" : "+"}
+                                  </span>
+                                )}
+                              </button>
+
+                              {/* Level 3 Submenu */}
+                              {subSubItem.hasSubmenu &&
+                                expandedMenus[subSubItem.id] && (
+                                  <div className="pl-4 border-l-2 border-teal-400/30 ml-2">
+                                    {subSubItem.submenu.map((deepItem) => (
+                                      <button
+                                        key={deepItem.id}
+                                        onClick={() => handleNavigation(deepItem)}
+                                        className="w-full text-left text-white/80 text-base font-light py-2 border-b border-teal-600/5 hover:bg-teal-600/10 hover:pl-2 transition-all duration-300"
+                                      >
+                                        {deepItem.label}
+                                      </button>
+                                    ))}
+                                  </div>
+                                )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </nav>
 
@@ -110,7 +252,10 @@ const NavBar = () => {
       {isMenuOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-[55] transition-opacity duration-500"
-          onClick={() => setIsMenuOpen(false)}
+          onClick={() => {
+            setIsMenuOpen(false);
+            setExpandedMenus({});
+          }}
         />
       )}
 
