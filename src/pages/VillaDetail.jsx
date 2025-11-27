@@ -23,7 +23,16 @@ const VillaDetail = () => {
   });
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (window.location.hash === "#floor-plans") {
+      const element = document.getElementById("floor-plans");
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
   }, [villaId]);
 
   useGSAP(() => {
@@ -256,7 +265,7 @@ const VillaDetail = () => {
       </section>
 
       {/* Floor Plans - Slide Scrub */}
-      <section className="floor-plans-section py-32 px-6 md:px-12 bg-dark-brown text-milk">
+      <section id="floor-plans" className="floor-plans-section py-32 px-6 md:px-12 bg-dark-brown text-milk">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold uppercase mb-16 text-center">Floor Plans</h2>
           

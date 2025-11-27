@@ -26,8 +26,8 @@ const NavBar = () => {
               id: "type-a-east",
               hasSubmenu: true,
               submenu: [
-                { label: "East - 1", id: "type-a-east-1", path: "/plans/type-a/east-1" },
-                { label: "East - 2", id: "type-a-east-2", path: "/plans/type-a/east-2" },
+                { label: "East - 1", id: "type-a-east-1", path: "/villa/the-grove#floor-plans" },
+                { label: "East - 2", id: "type-a-east-2", path: "/villa/the-grove#floor-plans" },
               ],
             },
             {
@@ -35,8 +35,8 @@ const NavBar = () => {
               id: "type-a-west",
               hasSubmenu: true,
               submenu: [
-                { label: "West - 1", id: "type-a-west-1", path: "/plans/type-a/west-1" },
-                { label: "West - 2", id: "type-a-west-2", path: "/plans/type-a/west-2" },
+                { label: "West - 1", id: "type-a-west-1", path: "/villa/the-grove#floor-plans" },
+                { label: "West - 2", id: "type-a-west-2", path: "/villa/the-grove#floor-plans" },
               ],
             },
           ],
@@ -46,8 +46,8 @@ const NavBar = () => {
           id: "type-b",
           hasSubmenu: true,
           submenu: [
-            { label: "Soleil", id: "type-b-east", path: "/plans/type-b/east" },
-            { label: "Ember", id: "type-b-west", path: "/plans/type-b/west" },
+            { label: "Soleil", id: "type-b-east", path: "/villa/the-courtyard#floor-plans" },
+            { label: "Ember", id: "type-b-west", path: "/villa/the-courtyard#floor-plans" },
           ],
         },
         {
@@ -55,8 +55,8 @@ const NavBar = () => {
           id: "type-c",
           hasSubmenu: true,
           submenu: [
-            { label: "Soleil", id: "type-c-east", path: "/plans/type-c/east" },
-            { label: "Ember", id: "type-c-west", path: "/plans/type-c/west" },
+            { label: "Soleil", id: "type-c-east", path: "/villa/the-estate#floor-plans" },
+            { label: "Ember", id: "type-c-west", path: "/villa/the-estate#floor-plans" },
           ],
         },
       ],
