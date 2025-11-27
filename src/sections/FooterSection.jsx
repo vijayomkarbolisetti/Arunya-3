@@ -51,18 +51,16 @@ const FooterSection = () => {
               and Special Offers!
             </p>
             <div
-              className="flex justify-between items-center border-b py-4 sm:py-5 mt-6 sm:mt-8 md:mt-10"
-              style={{ borderColor: theme.presets.footerSection.border }}
+              className="flex justify-between items-center border-b border-milk/30 py-4 sm:py-5 mt-6 sm:mt-8 md:mt-10 hover:border-milk transition-colors duration-300"
             >
-              {/* The input field and arrow icon for inquiry signup. */}{" "}
-              {/* A border at the bottom for a clean, modern look. */}
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full placeholder:font-sans"
-                style={{ color: theme.presets.footerSection.placeholder }}
+                className="w-full bg-transparent text-milk placeholder:text-milk/50 outline-none font-sans text-lg"
               />
-              <img src="/images/arrow.svg" alt="arrow" className="w-6 sm:w-8 md:w-10 flex-shrink-0" />
+              <button className="group">
+                <img src="/images/arrow.svg" alt="arrow" className="w-6 sm:w-8 md:w-10 flex-shrink-0 group-hover:translate-x-2 transition-transform duration-300" />
+              </button>
             </div>
           </div>
         </div>
@@ -74,8 +72,8 @@ const FooterSection = () => {
             Reserved
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-5 md:gap-7">
-            <p>Privacy Policy</p>
-            <p>Terms & Conditions</p>
+            <a href="#" className="hover:underline hover:text-white transition-colors cursor-pointer">Privacy Policy</a>
+            <a href="#" className="hover:underline hover:text-white transition-colors cursor-pointer">Terms & Conditions</a>
           </div>
         </div>
       </div>

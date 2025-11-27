@@ -6,39 +6,21 @@
 // Villa Types for the villa showcase slider
 const flavorlists = [
   {
-    name: "The Heritage Villa",
+    name: "The Estate",
     color: "brown",
     rotation: "md:rotate-[-8deg] rotate-0",
     sqft: "7,150 sq.ft",
   },
   {
-    name: "The Premium Villa",
+    name: "The Courtyard",
     color: "red",
     rotation: "md:rotate-[8deg] rotate-0",
-    sqft: "6,500 sq.ft",
+    sqft: "6,600 sq.ft",
   },
   {
-    name: "The Executive Villa",
+    name: "The Grove",
     color: "blue",
     rotation: "md:rotate-[-8deg] rotate-0",
-    sqft: "6,200 sq.ft",
-  },
-  {
-    name: "The Elite Villa",
-    color: "orange",
-    rotation: "md:rotate-[8deg] rotate-0",
-    sqft: "5,950 sq.ft",
-  },
-  {
-    name: "The Classic Villa",
-    color: "white",
-    rotation: "md:rotate-[-8deg] rotate-0",
-    sqft: "5,800 sq.ft",
-  },
-  {
-    name: "The Signature Villa",
-    color: "black",
-    rotation: "md:rotate-[8deg] rotate-0",
     sqft: "5,650 sq.ft",
   },
 ];

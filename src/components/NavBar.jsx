@@ -17,12 +17,12 @@ const NavBar = () => {
       hasSubmenu: true,
       submenu: [
         {
-          label: "Type A",
+          label: "The Grove",
           id: "type-a",
           hasSubmenu: true,
           submenu: [
             {
-              label: "East",
+              label: "Soleil",
               id: "type-a-east",
               hasSubmenu: true,
               submenu: [
@@ -31,7 +31,7 @@ const NavBar = () => {
               ],
             },
             {
-              label: "West",
+              label: "Ember",
               id: "type-a-west",
               hasSubmenu: true,
               submenu: [
@@ -42,21 +42,21 @@ const NavBar = () => {
           ],
         },
         {
-          label: "Type B",
+          label: "The Courtyard",
           id: "type-b",
           hasSubmenu: true,
           submenu: [
-            { label: "East", id: "type-b-east", path: "/plans/type-b/east" },
-            { label: "West", id: "type-b-west", path: "/plans/type-b/west" },
+            { label: "Soleil", id: "type-b-east", path: "/plans/type-b/east" },
+            { label: "Ember", id: "type-b-west", path: "/plans/type-b/west" },
           ],
         },
         {
-          label: "Type C",
+          label: "The Estate",
           id: "type-c",
           hasSubmenu: true,
           submenu: [
-            { label: "East", id: "type-c-east", path: "/plans/type-c/east" },
-            { label: "West", id: "type-c-west", path: "/plans/type-c/west" },
+            { label: "Soleil", id: "type-c-east", path: "/plans/type-c/east" },
+            { label: "Ember", id: "type-c-west", path: "/plans/type-c/west" },
           ],
         },
       ],

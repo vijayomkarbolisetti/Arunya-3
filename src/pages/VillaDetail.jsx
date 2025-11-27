@@ -1,11 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getVillaById } from "../constants/villaDetails";
 import { Icons } from "../components/Icons";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useGSAP } from "@gsap/react";
 import { useMediaQuery } from "react-responsive";
+import FooterSection from "../sections/FooterSection";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,6 +16,7 @@ const VillaDetail = () => {
   const villa = getVillaById(villaId);
   const containerRef = useRef(null);
   const featuresTrackRef = useRef(null);
+  const [activeFloorIndex, setActiveFloorIndex] = useState(0);
 
   const isTablet = useMediaQuery({
     query: "(max-width: 1024px)",
@@ -144,17 +146,19 @@ const VillaDetail = () => {
   return (
     <div ref={containerRef} className="w-full bg-milk overflow-x-hidden">
       {/* Navbar Overlay */}
-      <nav className="fixed top-0 left-0 w-full z-50 p-6 flex justify-between items-center mix-blend-difference text-milk pointer-events-none">
+      <nav className="fixed top-0 left-0 w-full z-50 p-6 flex justify-between items-center pointer-events-none">
         <button 
           onClick={() => navigate("/")}
-          className="pointer-events-auto flex items-center gap-2 font-bold text-lg hover:opacity-80 transition-opacity"
+          className="pointer-events-auto flex items-center gap-2 font-bold text-sm md:text-base bg-black/20 backdrop-blur-md border border-white/10 text-white px-4 py-2 rounded-full hover:bg-black/40 transition-all duration-300"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
           BACK
         </button>
-        <img src="/images/nav-logo.svg" alt="Logo" className="w-16 opacity-90" />
+        <div className="bg-white/10 backdrop-blur-md p-2 rounded-lg border border-white/10">
+          <img src="/images/nav-logo.svg" alt="Logo" className="w-16 md:w-20 opacity-100" />
+        </div>
       </nav>
 
       {/* Hero Section - Parallax & Clean */}
@@ -253,30 +257,68 @@ const VillaDetail = () => {
 
       {/* Floor Plans - Slide Scrub */}
       <section className="floor-plans-section py-32 px-6 md:px-12 bg-dark-brown text-milk">
-        <div className="max-w-5xl mx-auto space-y-24">
-          {villa.floorPlans.map((floor, i) => (
-            <div key={i} className="floor-plan-item flex flex-col md:flex-row gap-12 items-start border-b border-white/10 pb-12 last:border-0">
-              <div className="md:w-1/3">
-                <h3 className="text-5xl font-bold uppercase mb-2">{floor.floor}</h3>
-                <span className="text-light-brown text-xl font-mono">{floor.sqft}</span>
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold uppercase mb-16 text-center">Floor Plans</h2>
+          
+          <div className="flex flex-col lg:flex-row gap-12 h-auto lg:h-[600px]">
+            {/* Left Column - Floor Cards */}
+            <div className="w-full lg:w-1/3 flex flex-col gap-6">
+              {villa.floorPlans.map((floor, i) => (
+                <div 
+                  key={i} 
+                  onClick={() => setActiveFloorIndex(i)}
+                  className={`cursor-pointer p-6 rounded-lg border transition-all duration-300 flex items-center gap-6 ${
+                    activeFloorIndex === i 
+                      ? "bg-white/10 border-white/30 translate-x-4" 
+                      : "bg-white/5 border-white/5 hover:bg-white/10"
+                  }`}
+                >
+                  {/* Small Thumbnail */}
+                  <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0 bg-black/20">
+                    <img 
+                      src={floor.image} 
+                      alt={`${floor.floor} thumbnail`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  {/* Details */}
+                  <div className="flex-1">
+                    <h3 className={`text-xl font-bold uppercase mb-1 ${activeFloorIndex === i ? "text-white" : "text-white/80"}`}>
+                      {floor.floor}
+                    </h3>
+                    <span className="text-light-brown text-sm font-mono block mb-2">{floor.sqft}</span>
+                    <p className="text-xs text-white/60 line-clamp-2">
+                      {floor.features.join(", ")}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Right Column - Large Image Display */}
+            <div className="w-full lg:w-2/3 bg-black/20 rounded-xl overflow-hidden border border-white/10 relative group">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <img 
+                  key={activeFloorIndex} // Force re-render for animation
+                  src={villa.floorPlans[activeFloorIndex].image} 
+                  alt={villa.floorPlans[activeFloorIndex].floor}
+                  className="w-full h-full object-contain p-8 animate-fade-in"
+                />
               </div>
-              <div className="md:w-2/3 grid grid-cols-2 gap-4">
-                {floor.features.map((feat, j) => (
-                  <span key={j} className="text-lg opacity-70 hover:opacity-100 transition-opacity cursor-default">
-                    • {feat}
-                  </span>
-                ))}
+              
+              {/* Overlay Label */}
+              <div className="absolute bottom-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10">
+                <span className="text-white font-mono text-sm">
+                  VIEWING: {villa.floorPlans[activeFloorIndex].floor.toUpperCase()}
+                </span>
               </div>
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
-
-      {/* Footer */}
-      <footer className="bg-black py-8 text-center text-white/30 text-sm uppercase tracking-widest">
-        <p>© 2025 Aarunya Villas</p>
-      </footer>
+      <FooterSection />
     </div>
   );
 };
