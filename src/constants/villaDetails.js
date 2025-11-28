@@ -341,7 +341,7 @@ export const villaDetails = {
         floor: "East Facing",
         features: ["Living Room", "Dining Area", "Modern Kitchen", "Master Suite", "2 Guest Rooms", "Study Area", "3 Bathrooms", "Balconies", "Utility"],
         sqft: "5,650 sq.ft",
-        image: "/images/plans/ground-blue.jpg",
+        image: "/images/black.jpg",
         description: "Soleil East facing plan optimizes morning sunlight and natural ventilation"
       },
       {
@@ -349,7 +349,7 @@ export const villaDetails = {
         floor: "West Facing",
         features: ["Living Room", "Dining Area", "Modern Kitchen", "Master Suite", "2 Guest Rooms", "Study Area", "3 Bathrooms", "Balconies", "Utility"],
         sqft: "5,650 sq.ft",
-        image: "/images/plans/first-blue.jpg",
+        image: "/images/white.jpg",
         description: "Soleil West facing plan maximizes afternoon and evening natural light"
       },
       {
@@ -357,7 +357,7 @@ export const villaDetails = {
         floor: "East Facing",
         features: ["Open Living Area", "Gourmet Kitchen", "Master Bedroom with Walk-in", "2 Bedrooms", "Flex Space", "3.5 Bathrooms", "Private Terrace", "Utility"],
         sqft: "5,650 sq.ft",
-        image: "/images/plans/second-blue.jpg",
+        image: "/images/black.jpg",
         description: "Ember East facing plan with emphasis on spacious entertaining areas"
       },
       {
@@ -365,7 +365,7 @@ export const villaDetails = {
         floor: "West Facing",
         features: ["Open Living Area", "Gourmet Kitchen", "Master Bedroom with Walk-in", "2 Bedrooms", "Flex Space", "3.5 Bathrooms", "Private Terrace", "Utility"],
         sqft: "5,650 sq.ft",
-        image: "/images/plans/ground-blue.jpg",
+        image: "/images/white.jpg",
         description: "Ember West facing plan designed for sunset views and evening ambiance"
       },
     ],
