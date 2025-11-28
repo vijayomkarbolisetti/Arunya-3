@@ -270,13 +270,13 @@ export const villaDetails = {
 
     overview: {
       title: "Make Your Mark",
-      description: "The Grove offers a blank canvas for personalization. With its modern design and flexible spaces, this villa allows you to create a home that truly reflects your unique style and preferences.",
+      description: "The Grove offers a blank canvas for personalization. With its modern design and flexible spaces, this villa allows you to create a home that truly reflects your unique style and preferences. Choose from two distinctive variants - Soleil and Ember - each with customizable floor plan orientations.",
       highlights: [
+        "Two distinctive variants - Soleil & Ember",
         "Customizable interior options",
         "Modern minimalist design",
         "Flexible room configurations",
         "Smart home ready infrastructure",
-        "Contemporary finishes",
       ]
     },
 
@@ -287,7 +287,7 @@ export const villaDetails = {
       parking: "2 Car Parking",
       balconies: "2 Balconies",
       servant: "Utility Room",
-      orientation: "West Facing",
+      orientation: "Multiple Orientations Available",
       ceiling: "10 ft High Ceilings",
     },
 
@@ -334,24 +334,39 @@ export const villaDetails = {
       },
     ],
 
+    // Floor plans organized by variant and orientation
     floorPlans: [
       {
-        floor: "Ground Floor",
-        features: ["Living Room", "Dining Area", "Kitchen", "Flex Space", "Bathroom", "Utility"],
-        sqft: "2,150 sq.ft",
-        image: "/images/plans/ground-blue.jpg"
+        variant: "Soleil",
+        floor: "East Facing",
+        features: ["Living Room", "Dining Area", "Modern Kitchen", "Master Suite", "2 Guest Rooms", "Study Area", "3 Bathrooms", "Balconies", "Utility"],
+        sqft: "5,650 sq.ft",
+        image: "/images/plans/ground-blue.jpg",
+        description: "Soleil East facing plan optimizes morning sunlight and natural ventilation"
       },
       {
-        floor: "First Floor",
-        features: ["Master Bedroom", "2 Bedrooms", "3 Bathrooms", "Balcony", "Loft"],
-        sqft: "1,900 sq.ft",
-        image: "/images/plans/first-blue.jpg"
+        variant: "Soleil",
+        floor: "West Facing",
+        features: ["Living Room", "Dining Area", "Modern Kitchen", "Master Suite", "2 Guest Rooms", "Study Area", "3 Bathrooms", "Balconies", "Utility"],
+        sqft: "5,650 sq.ft",
+        image: "/images/plans/first-blue.jpg",
+        description: "Soleil West facing plan maximizes afternoon and evening natural light"
       },
       {
-        floor: "Second Floor",
-        features: ["Bonus Room", "Terrace", "Storage", "Utility Space"],
-        sqft: "1,600 sq.ft",
-        image: "/images/plans/second-blue.jpg"
+        variant: "Ember",
+        floor: "East Facing",
+        features: ["Open Living Area", "Gourmet Kitchen", "Master Bedroom with Walk-in", "2 Bedrooms", "Flex Space", "3.5 Bathrooms", "Private Terrace", "Utility"],
+        sqft: "5,650 sq.ft",
+        image: "/images/plans/second-blue.jpg",
+        description: "Ember East facing plan with emphasis on spacious entertaining areas"
+      },
+      {
+        variant: "Ember",
+        floor: "West Facing",
+        features: ["Open Living Area", "Gourmet Kitchen", "Master Bedroom with Walk-in", "2 Bedrooms", "Flex Space", "3.5 Bathrooms", "Private Terrace", "Utility"],
+        sqft: "5,650 sq.ft",
+        image: "/images/plans/ground-blue.jpg",
+        description: "Ember West facing plan designed for sunset views and evening ambiance"
       },
     ],
 

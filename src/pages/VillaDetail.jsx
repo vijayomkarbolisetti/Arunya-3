@@ -23,6 +23,18 @@ const VillaDetail = () => {
   });
 
   useEffect(() => {
+    // Check for floor index in URL search params
+    const urlParams = new URLSearchParams(window.location.search);
+    const floorIndex = urlParams.get('floorIndex');
+    
+    if (floorIndex !== null && !isNaN(floorIndex)) {
+      const index = parseInt(floorIndex);
+      if (index >= 0 && index < villa?.floorPlans?.length) {
+        setActiveFloorIndex(index);
+      }
+    }
+    
+    // Handle hash navigation
     if (window.location.hash === "#floor-plans") {
       const element = document.getElementById("floor-plans");
       if (element) {
@@ -33,7 +45,7 @@ const VillaDetail = () => {
     } else {
       window.scrollTo(0, 0);
     }
-  }, [villaId]);
+  }, [villaId, villa]);
 
   useGSAP(() => {
     if (!villa) return;
@@ -264,63 +276,118 @@ const VillaDetail = () => {
         </div>
       </section>
 
-      {/* Floor Plans - Slide Scrub */}
+      {/* Floor Plans - Tabbed Interface */}
       <section id="floor-plans" className="floor-plans-section py-32 px-6 md:px-12 bg-dark-brown text-milk">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold uppercase mb-16 text-center">Floor Plans</h2>
+          <h2 className="text-4xl md:text-5xl font-bold uppercase mb-12 text-center">Floor Plans</h2>
           
-          <div className="flex flex-col lg:flex-row gap-12 h-auto lg:h-[600px]">
-            {/* Left Column - Floor Cards */}
-            <div className="w-full lg:w-1/3 flex flex-col gap-6">
-              {villa.floorPlans.map((floor, i) => (
-                <div 
-                  key={i} 
+          {/* Tabs Navigation */}
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
+            {villa.floorPlans.map((plan, i) => {
+              const tabLabel = plan.variant 
+                ? `${plan.variant} - ${plan.floor}` 
+                : plan.floor;
+              
+              return (
+                <button
+                  key={i}
                   onClick={() => setActiveFloorIndex(i)}
-                  className={`cursor-pointer p-6 rounded-lg border transition-all duration-300 flex items-center gap-6 ${
-                    activeFloorIndex === i 
-                      ? "bg-white/10 border-white/30 translate-x-4" 
-                      : "bg-white/5 border-white/5 hover:bg-white/10"
+                  className={`px-6 py-3 rounded-full font-bold text-sm uppercase tracking-wide transition-all duration-300 border-2 ${
+                    activeFloorIndex === i
+                      ? "bg-white text-dark-brown border-white shadow-lg scale-105"
+                      : "bg-transparent text-white/70 border-white/20 hover:bg-white/10 hover:text-white hover:border-white/40"
                   }`}
                 >
-                  {/* Small Thumbnail */}
-                  <div className="w-20 h-20 rounded-md overflow-hidden flex-shrink-0 bg-black/20">
-                    <img 
-                      src={floor.image} 
-                      alt={`${floor.floor} thumbnail`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                  {tabLabel}
+                </button>
+              );
+            })}
+          </div>
 
-                  {/* Details */}
-                  <div className="flex-1">
-                    <h3 className={`text-xl font-bold uppercase mb-1 ${activeFloorIndex === i ? "text-white" : "text-white/80"}`}>
-                      {floor.floor}
-                    </h3>
-                    <span className="text-light-brown text-sm font-mono block mb-2">{floor.sqft}</span>
-                    <p className="text-xs text-white/60 line-clamp-2">
-                      {floor.features.join(", ")}
-                    </p>
+          {/* Floor Plan Display */}
+          <div className="grid lg:grid-cols-5 gap-8">
+            {/* Left Column - Plan Details (2 cols) */}
+            <div className="lg:col-span-2 flex flex-col justify-center space-y-6">
+              <div className="floor-plan-item">
+                {villa.floorPlans[activeFloorIndex].variant && (
+                  <div className="mb-4">
+                    <span className="inline-block px-4 py-1 bg-light-brown/20 text-light-brown rounded-full text-xs font-bold uppercase tracking-wider">
+                      {villa.floorPlans[activeFloorIndex].variant} Variant
+                    </span>
+                  </div>
+                )}
+                
+                <h3 className="text-3xl md:text-4xl font-bold uppercase mb-3 text-white">
+                  {villa.floorPlans[activeFloorIndex].floor}
+                </h3>
+                
+                <div className="flex items-center gap-4 mb-6">
+                  <span className="text-light-brown text-xl font-mono">
+                    {villa.floorPlans[activeFloorIndex].sqft}
+                  </span>
+                </div>
+
+                {villa.floorPlans[activeFloorIndex].description && (
+                  <p className="text-white/80 text-base mb-6 leading-relaxed">
+                    {villa.floorPlans[activeFloorIndex].description}
+                  </p>
+                )}
+
+                <div className="space-y-3 border-t border-white/20 pt-6">
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-white/60 mb-4">
+                    Key Features
+                  </h4>
+                  <div className="grid grid-cols-1 gap-2">
+                    {villa.floorPlans[activeFloorIndex].features.map((feature, idx) => (
+                      <div key={idx} className="flex items-start gap-3">
+                        <span className="w-1.5 h-1.5 bg-light-brown rounded-full mt-2 flex-shrink-0" />
+                        <span className="text-white/70 text-sm">{feature}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
 
-            {/* Right Column - Large Image Display */}
-            <div className="w-full lg:w-2/3 bg-black/20 rounded-xl overflow-hidden border border-white/10 relative group">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <img 
-                  key={activeFloorIndex} // Force re-render for animation
-                  src={villa.floorPlans[activeFloorIndex].image} 
-                  alt={villa.floorPlans[activeFloorIndex].floor}
-                  className="w-full h-full object-contain p-8 animate-fade-in"
-                />
-              </div>
-              
-              {/* Overlay Label */}
-              <div className="absolute bottom-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10">
-                <span className="text-white font-mono text-sm">
-                  VIEWING: {villa.floorPlans[activeFloorIndex].floor.toUpperCase()}
-                </span>
+            {/* Right Column - Floor Plan Image (3 cols) */}
+            <div className="lg:col-span-3 floor-plan-item">
+              <div className="bg-black/20 rounded-2xl overflow-hidden border border-white/10 relative group aspect-[4/3] lg:aspect-auto lg:h-[600px]">
+                <div className="absolute inset-0 flex items-center justify-center p-8">
+                  <img 
+                    key={activeFloorIndex}
+                    src={villa.floorPlans[activeFloorIndex].image} 
+                    alt={`${villa.floorPlans[activeFloorIndex].variant ? villa.floorPlans[activeFloorIndex].variant + ' - ' : ''}${villa.floorPlans[activeFloorIndex].floor}`}
+                    className="w-full h-full object-contain animate-fade-in"
+                  />
+                </div>
+                
+                {/* Overlay Info */}
+                <div className="absolute top-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10">
+                  <span className="text-white font-mono text-xs">
+                    PLAN {activeFloorIndex + 1} OF {villa.floorPlans.length}
+                  </span>
+                </div>
+
+                {/* Navigation Arrows */}
+                <button
+                  onClick={() => setActiveFloorIndex((prev) => (prev === 0 ? villa.floorPlans.length - 1 : prev - 1))}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 backdrop-blur-md p-3 rounded-full border border-white/10 hover:bg-white/20 transition-all duration-300 opacity-0 group-hover:opacity-100"
+                  aria-label="Previous floor plan"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+                
+                <button
+                  onClick={() => setActiveFloorIndex((prev) => (prev === villa.floorPlans.length - 1 ? 0 : prev + 1))}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 backdrop-blur-md p-3 rounded-full border border-white/10 hover:bg-white/20 transition-all duration-300 opacity-0 group-hover:opacity-100"
+                  aria-label="Next floor plan"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
               </div>
             </div>
           </div>

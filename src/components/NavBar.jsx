@@ -18,45 +18,47 @@ const NavBar = () => {
       submenu: [
         {
           label: "The Grove",
-          id: "type-a",
+          id: "the-grove",
           hasSubmenu: true,
           submenu: [
             {
               label: "Soleil",
-              id: "type-a-east",
+              id: "grove-soleil",
               hasSubmenu: true,
               submenu: [
-                { label: "East - 1", id: "type-a-east-1", path: "/villa/the-grove#floor-plans" },
-                { label: "East - 2", id: "type-a-east-2", path: "/villa/the-grove#floor-plans" },
+                { label: "East Facing", id: "grove-soleil-east", path: "/villa/the-grove#floor-plans", floorIndex: 0 },
+                { label: "West Facing", id: "grove-soleil-west", path: "/villa/the-grove#floor-plans", floorIndex: 1 },
               ],
             },
             {
               label: "Ember",
-              id: "type-a-west",
+              id: "grove-ember",
               hasSubmenu: true,
               submenu: [
-                { label: "West - 1", id: "type-a-west-1", path: "/villa/the-grove#floor-plans" },
-                { label: "West - 2", id: "type-a-west-2", path: "/villa/the-grove#floor-plans" },
+                { label: "East Facing", id: "grove-ember-east", path: "/villa/the-grove#floor-plans", floorIndex: 2 },
+                { label: "West Facing", id: "grove-ember-west", path: "/villa/the-grove#floor-plans", floorIndex: 3 },
               ],
             },
           ],
         },
         {
           label: "The Courtyard",
-          id: "type-b",
+          id: "the-courtyard",
           hasSubmenu: true,
           submenu: [
-            { label: "Soleil", id: "type-b-east", path: "/villa/the-courtyard#floor-plans" },
-            { label: "Ember", id: "type-b-west", path: "/villa/the-courtyard#floor-plans" },
+            { label: "Ground Floor", id: "courtyard-ground", path: "/villa/the-courtyard#floor-plans", floorIndex: 0 },
+            { label: "First Floor", id: "courtyard-first", path: "/villa/the-courtyard#floor-plans", floorIndex: 1 },
+            { label: "Second Floor", id: "courtyard-second", path: "/villa/the-courtyard#floor-plans", floorIndex: 2 },
           ],
         },
         {
           label: "The Estate",
-          id: "type-c",
+          id: "the-estate",
           hasSubmenu: true,
           submenu: [
-            { label: "Soleil", id: "type-c-east", path: "/villa/the-estate#floor-plans" },
-            { label: "Ember", id: "type-c-west", path: "/villa/the-estate#floor-plans" },
+            { label: "Ground Floor", id: "estate-ground", path: "/villa/the-estate#floor-plans", floorIndex: 0 },
+            { label: "First Floor", id: "estate-first", path: "/villa/the-estate#floor-plans", floorIndex: 1 },
+            { label: "Second Floor", id: "estate-second", path: "/villa/the-estate#floor-plans", floorIndex: 2 },
           ],
         },
       ],
@@ -81,7 +83,11 @@ const NavBar = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     } else if (item.path) {
-      navigate(item.path);
+      // Add floorIndex as query parameter if it exists
+      const path = item.floorIndex !== undefined 
+        ? `${item.path}?floorIndex=${item.floorIndex}` 
+        : item.path;
+      navigate(path);
     }
     if (!item.hasSubmenu) {
       setIsMenuOpen(false);
