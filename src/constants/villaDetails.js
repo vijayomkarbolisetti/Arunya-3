@@ -86,22 +86,36 @@ export const villaDetails = {
 
     floorPlans: [
       {
-        floor: "Ground Floor",
-        features: ["Living Room", "Dining Area", "Kitchen", "Guest Bedroom", "Powder Room", "Servant Quarter"],
-        sqft: "2,850 sq.ft",
-        image: "/images/plans/ground-brown.jpg"
+        variant: "Soleil",
+        floor: "East Facing",
+        features: ["Grand Entrance", "Double Height Living", "Formal Dining", "Show Kitchen", "Master Suite", "Home Theater", "Gym", "Terrace Garden"],
+        sqft: "7,150 sq.ft",
+        image: "/floor/EAST STYLE A 03.jpg",
+        description: "Soleil East facing estate designed for grandeur and luxury living"
       },
       {
-        floor: "First Floor",
-        features: ["Master Bedroom with Balcony", "2 Bedrooms", "Family Lounge", "2 Attached Bathrooms", "Study Room"],
-        sqft: "2,400 sq.ft",
-        image: "/images/plans/first-brown.jpg"
+        variant: "Soleil",
+        floor: "West Facing",
+        features: ["Grand Entrance", "Double Height Living", "Formal Dining", "Show Kitchen", "Master Suite", "Home Theater", "Gym", "Terrace Garden"],
+        sqft: "7,150 sq.ft",
+        image: "/floor/WEST  STYLE A 03.jpg",
+        description: "Soleil West facing estate maximizing sunset views and evening ambiance"
       },
       {
-        floor: "Second Floor",
-        features: ["Home Theater", "Guest Suite", "Gym", "Storage", "Terrace Garden"],
-        sqft: "1,900 sq.ft",
-        image: "/images/plans/second-brown.jpg"
+        variant: "Ember",
+        floor: "East Facing",
+        features: ["Contemporary Layout", "Open Plan Living", "Chef's Kitchen", "Family Lounge", "Master Wing", "Entertainment Zone", "Spa", "Sky Deck"],
+        sqft: "7,150 sq.ft",
+        image: "/floor/EAST STYLE B 03.jpg",
+        description: "Ember East facing estate focusing on modern family connectivity"
+      },
+      {
+        variant: "Ember",
+        floor: "West Facing",
+        features: ["Contemporary Layout", "Open Plan Living", "Chef's Kitchen", "Family Lounge", "Master Wing", "Entertainment Zone", "Spa", "Sky Deck"],
+        sqft: "7,150 sq.ft",
+        image: "/floor/WEST  STYLE B 03.jpg",
+        description: "Ember West facing estate with expansive outdoor living spaces"
       },
     ],
 
@@ -211,22 +225,36 @@ export const villaDetails = {
 
     floorPlans: [
       {
-        floor: "Ground Floor",
-        features: ["Living Room", "Dining Area", "Modern Kitchen", "Guest Room", "Bathroom", "Utility Area"],
-        sqft: "2,600 sq.ft",
-        image: "/images/plans/ground-red.jpg"
+        variant: "Soleil",
+        floor: "East Facing",
+        features: ["Living Room", "Dining Area", "Modern Kitchen", "Guest Room", "Master Suite", "Family Lounge", "Study", "Terrace"],
+        sqft: "6,600 sq.ft",
+        image: "/floor/EAST STYLE A 02.jpg",
+        description: "Soleil East facing courtyard villa with central light well"
       },
       {
-        floor: "First Floor",
-        features: ["Master Bedroom", "2 Bedrooms", "Family Area", "3 Attached Bathrooms", "Balcony"],
-        sqft: "2,300 sq.ft",
-        image: "/images/plans/first-red.jpg"
+        variant: "Soleil",
+        floor: "West Facing",
+        features: ["Living Room", "Dining Area", "Modern Kitchen", "Guest Room", "Master Suite", "Family Lounge", "Study", "Terrace"],
+        sqft: "6,600 sq.ft",
+        image: "/floor/WEST  STYLE A 01.jpg",
+        description: "Soleil West facing courtyard villa with sunset terrace"
       },
       {
-        floor: "Second Floor",
-        features: ["Recreation Room", "Study", "Terrace Garden", "Storage", "Bathroom"],
-        sqft: "1,700 sq.ft",
-        image: "/images/plans/second-red.jpg"
+        variant: "Ember",
+        floor: "East Facing",
+        features: ["Open Layout", "Gourmet Kitchen", "Master Bedroom", "3 Guest Rooms", "Home Office", "Recreation Room", "Private Garden"],
+        sqft: "6,600 sq.ft",
+        image: "/floor/EAST STYLE B 02.jpg",
+        description: "Ember East facing courtyard villa designed for indoor-outdoor living"
+      },
+      {
+        variant: "Ember",
+        floor: "West Facing",
+        features: ["Open Layout", "Gourmet Kitchen", "Master Bedroom", "3 Guest Rooms", "Home Office", "Recreation Room", "Private Garden"],
+        sqft: "6,600 sq.ft",
+        image: "/floor/WEST  STYLE B 02.jpg",
+        description: "Ember West facing courtyard villa with panoramic views"
       },
     ],
 

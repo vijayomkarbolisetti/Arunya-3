@@ -4,6 +4,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState({});
+  const [isPhoneVerified, setIsPhoneVerified] = useState(false);
+  const [showPhonePopup, setShowPhonePopup] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -26,8 +30,8 @@ const NavBar = () => {
               id: "grove-soleil",
               hasSubmenu: true,
               submenu: [
-                { label: "East Facing", id: "grove-soleil-east", path: "/villa/the-grove#floor-plans", floorIndex: 0 },
-                { label: "West Facing", id: "grove-soleil-west", path: "/villa/the-grove#floor-plans", floorIndex: 1 },
+                { label: "Soleil - 1", id: "grove-soleil-east", path: "/villa/the-grove#floor-plans", floorIndex: 0 },
+                { label: "Soleil - 2", id: "grove-soleil-west", path: "/villa/the-grove#floor-plans", floorIndex: 1 },
               ],
             },
             {
@@ -35,8 +39,8 @@ const NavBar = () => {
               id: "grove-ember",
               hasSubmenu: true,
               submenu: [
-                { label: "East Facing", id: "grove-ember-east", path: "/villa/the-grove#floor-plans", floorIndex: 2 },
-                { label: "West Facing", id: "grove-ember-west", path: "/villa/the-grove#floor-plans", floorIndex: 3 },
+                { label: "Ember - 1", id: "grove-ember-east", path: "/villa/the-grove#floor-plans", floorIndex: 2 },
+                { label: "Ember - 2", id: "grove-ember-west", path: "/villa/the-grove#floor-plans", floorIndex: 3 },
               ],
             },
           ],
@@ -46,9 +50,24 @@ const NavBar = () => {
           id: "the-courtyard",
           hasSubmenu: true,
           submenu: [
-            { label: "Ground Floor", id: "courtyard-ground", path: "/villa/the-courtyard#floor-plans", floorIndex: 0 },
-            { label: "First Floor", id: "courtyard-first", path: "/villa/the-courtyard#floor-plans", floorIndex: 1 },
-            { label: "Second Floor", id: "courtyard-second", path: "/villa/the-courtyard#floor-plans", floorIndex: 2 },
+            {
+              label: "Soleil",
+              id: "courtyard-soleil",
+              hasSubmenu: true,
+              submenu: [
+                { label: "Soleil - 1", id: "courtyard-soleil-east", path: "/villa/the-courtyard#floor-plans", floorIndex: 0 },
+                { label: "Soleil - 2", id: "courtyard-soleil-west", path: "/villa/the-courtyard#floor-plans", floorIndex: 1 },
+              ],
+            },
+            {
+              label: "Ember",
+              id: "courtyard-ember",
+              hasSubmenu: true,
+              submenu: [
+                { label: "Ember - 1", id: "courtyard-ember-east", path: "/villa/the-courtyard#floor-plans", floorIndex: 2 },
+                { label: "Ember - 2", id: "courtyard-ember-west", path: "/villa/the-courtyard#floor-plans", floorIndex: 3 },
+              ],
+            },
           ],
         },
         {
@@ -56,9 +75,24 @@ const NavBar = () => {
           id: "the-estate",
           hasSubmenu: true,
           submenu: [
-            { label: "Ground Floor", id: "estate-ground", path: "/villa/the-estate#floor-plans", floorIndex: 0 },
-            { label: "First Floor", id: "estate-first", path: "/villa/the-estate#floor-plans", floorIndex: 1 },
-            { label: "Second Floor", id: "estate-second", path: "/villa/the-estate#floor-plans", floorIndex: 2 },
+            {
+              label: "Soleil",
+              id: "estate-soleil",
+              hasSubmenu: true,
+              submenu: [
+                { label: "Soleil - 1", id: "estate-soleil-east", path: "/villa/the-estate#floor-plans", floorIndex: 0 },
+                { label: "Soleil - 2", id: "estate-soleil-west", path: "/villa/the-estate#floor-plans", floorIndex: 1 },
+              ],
+            },
+            {
+              label: "Ember",
+              id: "estate-ember",
+              hasSubmenu: true,
+              submenu: [
+                { label: "Ember - 1", id: "estate-ember-east", path: "/villa/the-estate#floor-plans", floorIndex: 2 },
+                { label: "Ember - 2", id: "estate-ember-west", path: "/villa/the-estate#floor-plans", floorIndex: 3 },
+              ],
+            },
           ],
         },
       ],
@@ -70,6 +104,30 @@ const NavBar = () => {
       ...prev,
       [id]: !prev[id],
     }));
+  };
+
+  const handleMenuClick = (item) => {
+    if (item.id === "plans" && !isPhoneVerified) {
+      setShowPhonePopup(true);
+      return;
+    }
+
+    if (item.hasSubmenu) {
+      toggleSubmenu(item.id);
+    } else {
+      handleNavigation(item);
+    }
+  };
+
+  const handlePhoneSubmit = (e) => {
+    e.preventDefault();
+    if (phoneNumber.length < 10) {
+      setPhoneError("Please enter a valid phone number");
+      return;
+    }
+    setIsPhoneVerified(true);
+    setShowPhonePopup(false);
+    toggleSubmenu("plans");
   };
 
   const handleNavigation = (item) => {
@@ -156,11 +214,7 @@ const NavBar = () => {
           {menuItems.map((item, index) => (
             <div key={item.id}>
               <button
-                onClick={() =>
-                  item.hasSubmenu
-                    ? toggleSubmenu(item.id)
-                    : handleNavigation(item)
-                }
+                onClick={() => handleMenuClick(item)}
                 className="w-full text-left text-white text-lg font-light py-4 border-b border-teal-600/20 hover:bg-teal-600/20 hover:pl-4 transition-all duration-300 tracking-wide flex items-center justify-between"
                 style={{
                   animationDelay: `${index * 50}ms`,
@@ -265,6 +319,53 @@ const NavBar = () => {
         />
       )}
 
+      {/* Phone Verification Popup */}
+      {showPhonePopup && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center px-4">
+          <div 
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={() => setShowPhonePopup(false)}
+          />
+          <div className="relative bg-white rounded-2xl p-8 w-full max-w-md shadow-2xl animate-fade-in-up">
+            <button 
+              onClick={() => setShowPhonePopup(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+            >
+              ✕
+            </button>
+            
+            <div className="text-center mb-6">
+              <h3 className="text-2xl font-bold text-dark-brown mb-2">Exclusive Access</h3>
+              <p className="text-gray-600">Please enter your phone number to view our premium floor plans.</p>
+            </div>
+
+            <form onSubmit={handlePhoneSubmit} className="space-y-4">
+              <div>
+                <input
+                  type="tel"
+                  value={phoneNumber}
+                  onChange={(e) => {
+                    setPhoneNumber(e.target.value.replace(/\D/g, ''));
+                    setPhoneError("");
+                  }}
+                  placeholder="Enter Phone Number"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 outline-none transition-all text-lg"
+                  maxLength={10}
+                />
+                {phoneError && <p className="text-red-500 text-sm mt-1">{phoneError}</p>}
+              </div>
+              
+              <button
+                type="submit"
+                className="w-full bg-teal-700 text-white font-bold py-3 rounded-lg hover:bg-teal-800 transition-colors shadow-lg"
+              >
+                View Plans
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
       <style>{`
         @keyframes slideIn {
           from {
@@ -275,6 +376,19 @@ const NavBar = () => {
             opacity: 1;
             transform: translateX(0);
           }
+        }
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fade-in-up {
+          animation: fadeInUp 0.3s ease-out forwards;
         }
       `}</style>
     </>

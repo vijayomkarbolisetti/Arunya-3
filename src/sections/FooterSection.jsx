@@ -18,13 +18,10 @@ const FooterSection = () => {
 
         <div className="flex-center gap-3 sm:gap-4 md:gap-5 relative z-10 mt-8 sm:mt-12 md:mt-16 lg:mt-20">
           <div className="social-btn">
-            <img src="./images/yt.svg" alt="YouTube" className="w-4 sm:w-5 md:w-6 lg:w-auto" />
+            <img src="/images/yt.svg" alt="YouTube" className="w-4 sm:w-5 md:w-6 lg:w-auto" />
           </div>
           <div className="social-btn">
-            <img src="./images/insta.svg" alt="Instagram" className="w-4 sm:w-5 md:w-6 lg:w-auto" />
-          </div>
-          <div className="social-btn">
-            <img src="./images/tiktok.svg" alt="TikTok" className="w-4 sm:w-5 md:w-6 lg:w-auto" />
+            <img src="/images/insta.svg" alt="Instagram" className="w-4 sm:w-5 md:w-6 lg:w-auto" />
           </div>
         </div>
 

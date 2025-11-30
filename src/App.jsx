@@ -19,6 +19,7 @@ import ClubhousePage from "./pages/ClubhousePage";
 import ClubhouseSection from "./sections/ClubhouseSection";
 import CentralParkPage from "./pages/CentralParkPage";
 import CentralParkSection from "./sections/CentralParkSection";
+import ComparisonSection from "./sections/ComparisonSection";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -45,11 +46,12 @@ const HomePage = () => {
         <div id="smooth-wrapper">
           <div id="smooth-content">
             <HeroSection />
-            {/* <MessageSection /> */}
+            <MessageSection />
             <FlavorSection />
             <NutritionSection />
             <ClubhouseSection />
             <CentralParkSection />
+            <ComparisonSection />
 
             <MarqueeSection />
 
@@ -69,6 +71,7 @@ const HomePage = () => {
           <NutritionSection />
           <ClubhouseSection />
           <CentralParkSection />
+          <ComparisonSection />
 
           <MarqueeSection />
 

@@ -284,9 +284,11 @@ const VillaDetail = () => {
           {/* Tabs Navigation */}
           <div className="flex flex-wrap justify-center gap-3 mb-12">
             {villa.floorPlans.map((plan, i) => {
-              const tabLabel = plan.variant 
-                ? `${plan.variant} - ${plan.floor}` 
-                : plan.floor;
+              let tabLabel = plan.floor;
+              if (plan.variant) {
+                const suffix = plan.floor.toLowerCase().includes("east") ? "1" : "2";
+                tabLabel = `${plan.variant} - ${suffix}`;
+              }
               
               return (
                 <button
