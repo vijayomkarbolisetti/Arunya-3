@@ -46,12 +46,12 @@ const HomePage = () => {
         <div id="smooth-wrapper">
           <div id="smooth-content">
             <HeroSection />
-            <MessageSection />
+            {/* <MessageSection /> */}
             <FlavorSection />
             <NutritionSection />
             <ClubhouseSection />
             <CentralParkSection />
-            <ComparisonSection />
+            {/* <ComparisonSection /> */}
 
             <MarqueeSection />
 
