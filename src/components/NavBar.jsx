@@ -30,8 +30,18 @@ const NavBar = () => {
               id: "grove-soleil",
               hasSubmenu: true,
               submenu: [
-                { label: "Soleil - 1", id: "grove-soleil-east", path: "/villa/the-grove#floor-plans", floorIndex: 0 },
-                { label: "Soleil - 2", id: "grove-soleil-west", path: "/villa/the-grove#floor-plans", floorIndex: 1 },
+                {
+                  label: "Soleil - 1",
+                  id: "grove-soleil-east",
+                  path: "/villa/the-grove#floor-plans",
+                  floorIndex: 0,
+                },
+                {
+                  label: "Soleil - 2",
+                  id: "grove-soleil-west",
+                  path: "/villa/the-grove#floor-plans",
+                  floorIndex: 1,
+                },
               ],
             },
             {
@@ -39,8 +49,18 @@ const NavBar = () => {
               id: "grove-ember",
               hasSubmenu: true,
               submenu: [
-                { label: "Ember - 1", id: "grove-ember-east", path: "/villa/the-grove#floor-plans", floorIndex: 2 },
-                { label: "Ember - 2", id: "grove-ember-west", path: "/villa/the-grove#floor-plans", floorIndex: 3 },
+                {
+                  label: "Ember - 1",
+                  id: "grove-ember-east",
+                  path: "/villa/the-grove#floor-plans",
+                  floorIndex: 2,
+                },
+                {
+                  label: "Ember - 2",
+                  id: "grove-ember-west",
+                  path: "/villa/the-grove#floor-plans",
+                  floorIndex: 3,
+                },
               ],
             },
           ],
@@ -53,20 +73,14 @@ const NavBar = () => {
             {
               label: "Soleil",
               id: "courtyard-soleil",
-              hasSubmenu: true,
-              submenu: [
-                { label: "Soleil - 1", id: "courtyard-soleil-east", path: "/villa/the-courtyard#floor-plans", floorIndex: 0 },
-                { label: "Soleil - 2", id: "courtyard-soleil-west", path: "/villa/the-courtyard#floor-plans", floorIndex: 1 },
-              ],
+              path: "/villa/the-courtyard#floor-plans",
+              floorIndex: 0,
             },
             {
               label: "Ember",
               id: "courtyard-ember",
-              hasSubmenu: true,
-              submenu: [
-                { label: "Ember - 1", id: "courtyard-ember-east", path: "/villa/the-courtyard#floor-plans", floorIndex: 2 },
-                { label: "Ember - 2", id: "courtyard-ember-west", path: "/villa/the-courtyard#floor-plans", floorIndex: 3 },
-              ],
+              path: "/villa/the-courtyard#floor-plans",
+              floorIndex: 1,
             },
           ],
         },
@@ -78,20 +92,14 @@ const NavBar = () => {
             {
               label: "Soleil",
               id: "estate-soleil",
-              hasSubmenu: true,
-              submenu: [
-                { label: "Soleil - 1", id: "estate-soleil-east", path: "/villa/the-estate#floor-plans", floorIndex: 0 },
-                { label: "Soleil - 2", id: "estate-soleil-west", path: "/villa/the-estate#floor-plans", floorIndex: 1 },
-              ],
+              path: "/villa/the-estate#floor-plans",
+              floorIndex: 0,
             },
             {
               label: "Ember",
               id: "estate-ember",
-              hasSubmenu: true,
-              submenu: [
-                { label: "Ember - 1", id: "estate-ember-east", path: "/villa/the-estate#floor-plans", floorIndex: 2 },
-                { label: "Ember - 2", id: "estate-ember-west", path: "/villa/the-estate#floor-plans", floorIndex: 3 },
-              ],
+              path: "/villa/the-estate#floor-plans",
+              floorIndex: 1,
             },
           ],
         },
@@ -142,9 +150,10 @@ const NavBar = () => {
       }
     } else if (item.path) {
       // Add floorIndex as query parameter if it exists
-      const path = item.floorIndex !== undefined 
-        ? `${item.path}?floorIndex=${item.floorIndex}` 
-        : item.path;
+      const path =
+        item.floorIndex !== undefined
+          ? `${item.path}?floorIndex=${item.floorIndex}`
+          : item.path;
       navigate(path);
     }
     if (!item.hasSubmenu) {
@@ -281,7 +290,9 @@ const NavBar = () => {
                                     {subSubItem.submenu.map((deepItem) => (
                                       <button
                                         key={deepItem.id}
-                                        onClick={() => handleNavigation(deepItem)}
+                                        onClick={() =>
+                                          handleNavigation(deepItem)
+                                        }
                                         className="w-full text-left text-white/80 text-base font-light py-2 border-b border-teal-600/5 hover:bg-teal-600/10 hover:pl-2 transition-all duration-300"
                                       >
                                         {deepItem.label}
@@ -322,21 +333,25 @@ const NavBar = () => {
       {/* Phone Verification Popup */}
       {showPhonePopup && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center px-4">
-          <div 
+          <div
             className="absolute inset-0 bg-black/70 backdrop-blur-sm"
             onClick={() => setShowPhonePopup(false)}
           />
           <div className="relative bg-white rounded-2xl p-8 w-full max-w-md shadow-2xl animate-fade-in-up">
-            <button 
+            <button
               onClick={() => setShowPhonePopup(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
             >
               ✕
             </button>
-            
+
             <div className="text-center mb-6">
-              <h3 className="text-2xl font-bold text-dark-brown mb-2">Exclusive Access</h3>
-              <p className="text-gray-600">Please enter your phone number to view our premium floor plans.</p>
+              <h3 className="text-2xl font-bold text-dark-brown mb-2">
+                Exclusive Access
+              </h3>
+              <p className="text-gray-600">
+                Please enter your phone number to view our premium floor plans.
+              </p>
             </div>
 
             <form onSubmit={handlePhoneSubmit} className="space-y-4">
@@ -345,16 +360,18 @@ const NavBar = () => {
                   type="tel"
                   value={phoneNumber}
                   onChange={(e) => {
-                    setPhoneNumber(e.target.value.replace(/\D/g, ''));
+                    setPhoneNumber(e.target.value.replace(/\D/g, ""));
                     setPhoneError("");
                   }}
                   placeholder="Enter Phone Number"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 outline-none transition-all text-lg"
                   maxLength={10}
                 />
-                {phoneError && <p className="text-red-500 text-sm mt-1">{phoneError}</p>}
+                {phoneError && (
+                  <p className="text-red-500 text-sm mt-1">{phoneError}</p>
+                )}
               </div>
-              
+
               <button
                 type="submit"
                 className="w-full bg-teal-700 text-white font-bold py-3 rounded-lg hover:bg-teal-800 transition-colors shadow-lg"

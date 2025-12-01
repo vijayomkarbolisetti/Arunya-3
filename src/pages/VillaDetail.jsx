@@ -17,6 +17,7 @@ const VillaDetail = () => {
   const containerRef = useRef(null);
   const featuresTrackRef = useRef(null);
   const [activeFloorIndex, setActiveFloorIndex] = useState(0);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const isTablet = useMediaQuery({
     query: "(max-width: 1024px)",
@@ -31,6 +32,7 @@ const VillaDetail = () => {
       const index = parseInt(floorIndex);
       if (index >= 0 && index < villa?.floorPlans?.length) {
         setActiveFloorIndex(index);
+        setActiveImageIndex(0); // Reset image index when changing floor plan
       }
     }
     
@@ -285,7 +287,8 @@ const VillaDetail = () => {
           <div className="flex flex-wrap justify-center gap-3 mb-12">
             {villa.floorPlans.map((plan, i) => {
               let tabLabel = plan.floor;
-              if (plan.variant) {
+              // Only add suffix for multi-variant floor plans (Grove)
+              if (plan.variant && plan.floor.toLowerCase().includes("facing")) {
                 const suffix = plan.floor.toLowerCase().includes("east") ? "1" : "2";
                 tabLabel = `${plan.variant} - ${suffix}`;
               }
@@ -293,7 +296,10 @@ const VillaDetail = () => {
               return (
                 <button
                   key={i}
-                  onClick={() => setActiveFloorIndex(i)}
+                  onClick={() => {
+                    setActiveFloorIndex(i);
+                    setActiveImageIndex(0); // Reset to first image when changing floor plan
+                  }}
                   className={`px-6 py-3 rounded-full font-bold text-sm uppercase tracking-wide transition-all duration-300 border-2 ${
                     activeFloorIndex === i
                       ? "bg-white text-dark-brown border-white shadow-lg scale-105"
@@ -351,45 +357,130 @@ const VillaDetail = () => {
               </div>
             </div>
 
-            {/* Right Column - Floor Plan Image (3 cols) */}
+            {/* Right Column - Floor Plan Image Carousel (3 cols) */}
             <div className="lg:col-span-3 floor-plan-item">
               <div className="bg-black/20 rounded-2xl overflow-hidden border border-white/10 relative group aspect-[4/3] lg:aspect-auto lg:h-[600px]">
-                <div className="absolute inset-0 flex items-center justify-center p-8">
-                  <img 
-                    key={activeFloorIndex}
-                    src={villa.floorPlans[activeFloorIndex].image} 
-                    alt={`${villa.floorPlans[activeFloorIndex].variant ? villa.floorPlans[activeFloorIndex].variant + ' - ' : ''}${villa.floorPlans[activeFloorIndex].floor}`}
-                    className="w-full h-full object-contain animate-fade-in"
-                  />
+                <div className="absolute inset-0 flex items-center justify-center p-8 pb-24">
+                  {(() => {
+                    const currentPlan = villa.floorPlans[activeFloorIndex];
+                    const images = Array.isArray(currentPlan.images) ? currentPlan.images : [{ label: currentPlan.floor, image: currentPlan.image }];
+                    const currentImage = images[activeImageIndex] || images[0];
+                    
+                    return (
+                      <img 
+                        key={`${activeFloorIndex}-${activeImageIndex}`}
+                        src={currentImage.image} 
+                        alt={`${currentPlan.variant ? currentPlan.variant + ' - ' : ''}${currentImage.label || currentPlan.floor}`}
+                        className="w-full h-full object-contain animate-fade-in"
+                      />
+                    );
+                  })()}
                 </div>
                 
-                {/* Overlay Info */}
-                <div className="absolute top-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10">
+                {/* Floor Label Overlay */}
+                <div className="absolute top-6 left-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10">
                   <span className="text-white font-mono text-xs">
-                    PLAN {activeFloorIndex + 1} OF {villa.floorPlans.length}
+                    {(() => {
+                      const currentPlan = villa.floorPlans[activeFloorIndex];
+                      const images = Array.isArray(currentPlan.images) ? currentPlan.images : [{ label: currentPlan.floor }];
+                      return images[activeImageIndex]?.label || currentPlan.floor;
+                    })()}
                   </span>
                 </div>
 
-                {/* Navigation Arrows */}
-                <button
-                  onClick={() => setActiveFloorIndex((prev) => (prev === 0 ? villa.floorPlans.length - 1 : prev - 1))}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 backdrop-blur-md p-3 rounded-full border border-white/10 hover:bg-white/20 transition-all duration-300 opacity-0 group-hover:opacity-100"
-                  aria-label="Previous floor plan"
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
-                
-                <button
-                  onClick={() => setActiveFloorIndex((prev) => (prev === villa.floorPlans.length - 1 ? 0 : prev + 1))}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 backdrop-blur-md p-3 rounded-full border border-white/10 hover:bg-white/20 transition-all duration-300 opacity-0 group-hover:opacity-100"
-                  aria-label="Next floor plan"
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </button>
+                {/* Plan Counter */}
+                <div className="absolute top-6 right-6 bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10">
+                  <span className="text-white font-mono text-xs">
+                    {(() => {
+                      const currentPlan = villa.floorPlans[activeFloorIndex];
+                      const images = Array.isArray(currentPlan.images) ? currentPlan.images : [currentPlan.image];
+                      return `${activeImageIndex + 1} OF ${images.length}`;
+                    })()}
+                  </span>
+                </div>
+
+                {/* Image Navigation Arrows */}
+                {(() => {
+                  const currentPlan = villa.floorPlans[activeFloorIndex];
+                  const images = Array.isArray(currentPlan.images) ? currentPlan.images : [currentPlan.image];
+                  
+                  if (images.length > 1) {
+                    return (
+                      <>
+                        <button
+                          onClick={() => {
+                            setActiveImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+                          }}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 backdrop-blur-md p-3 rounded-full border border-white/10 hover:bg-white/20 transition-all duration-300 opacity-0 group-hover:opacity-100"
+                          aria-label="Previous floor"
+                        >
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </button>
+                        
+                        <button
+                          onClick={() => {
+                            setActiveImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+                          }}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 backdrop-blur-md p-3 rounded-full border border-white/10 hover:bg-white/20 transition-all duration-300 opacity-0 group-hover:opacity-100"
+                          aria-label="Next floor"
+                        >
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </button>
+                      </>
+                    );
+                  }
+                  return null;
+                })()}
+
+                {/* Floor Thumbnail Previews */}
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3">
+                  {(() => {
+                    const currentPlan = villa.floorPlans[activeFloorIndex];
+                    const images = Array.isArray(currentPlan.images) ? currentPlan.images : [{ image: currentPlan.image, label: currentPlan.floor }];
+                    
+                    return images.map((img, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setActiveImageIndex(idx)}
+                        className={`relative group/thumb transition-all duration-300 ${
+                          activeImageIndex === idx
+                            ? "scale-110"
+                            : "scale-100 hover:scale-105"
+                        }`}
+                        aria-label={`View ${img.label || `floor ${idx + 1}`}`}
+                      >
+                        <div className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
+                          activeImageIndex === idx
+                            ? "border-white shadow-lg shadow-white/50"
+                            : "border-white/30 hover:border-white/60"
+                        }`}>
+                          <img
+                            src={img.image}
+                            alt={img.label}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className={`absolute inset-0 bg-black transition-opacity duration-300 ${
+                            activeImageIndex === idx
+                              ? "opacity-0"
+                              : "opacity-40 group-hover/thumb:opacity-20"
+                          }`} />
+                        </div>
+                        {/* Label */}
+                        <div className={`absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-bold transition-all duration-300 ${
+                          activeImageIndex === idx
+                            ? "text-white"
+                            : "text-white/60 group-hover/thumb:text-white/80"
+                        }`}>
+                          {img.label}
+                        </div>
+                      </button>
+                    ));
+                  })()}
+                </div>
               </div>
             </div>
           </div>
