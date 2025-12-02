@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { getVillaById } from "../constants/villaDetails";
+import { getVillaById, villaDetails } from "../constants/villaDetails";
 import { Icons } from "../components/Icons";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
@@ -18,12 +18,27 @@ const VillaDetail = () => {
   const featuresTrackRef = useRef(null);
   const [activeFloorIndex, setActiveFloorIndex] = useState(0);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Determine if we need detailed tabs (e.g. for The Grove where we have multiple plans per variant)
+  // or simple tabs (e.g. for Estate where 1 variant = 1 plan)
+  const uniqueVariants = [...new Set(villa?.floorPlans?.map(p => p.variant).filter(Boolean))];
+  const hasMultiplePlansPerVariant = villa?.floorPlans?.length > uniqueVariants.length;
+
+  const activePlan = villa?.floorPlans?.[activeFloorIndex];
 
   const isTablet = useMediaQuery({
     query: "(max-width: 1024px)",
   });
 
   useEffect(() => {
+    // Reset state when villa changes
+    setActiveFloorIndex(0);
+    setActiveImageIndex(0);
+    setIsModalOpen(false);
+    setIsMenuOpen(false);
+
     // Check for floor index in URL search params
     const urlParams = new URLSearchParams(window.location.search);
     const floorIndex = urlParams.get('floorIndex');
@@ -51,6 +66,9 @@ const VillaDetail = () => {
 
   useGSAP(() => {
     if (!villa) return;
+
+    // Force refresh ScrollTrigger to ensure positions are correct after navigation
+    ScrollTrigger.refresh();
 
     // Hero Animation - Parallax Effect
     gsap.to(".hero-bg", {
@@ -167,7 +185,7 @@ const VillaDetail = () => {
   }
 
   return (
-    <div ref={containerRef} className="w-full bg-milk overflow-x-hidden">
+    <div key={villaId} ref={containerRef} className="w-full bg-milk overflow-x-hidden">
       {/* Navbar Overlay */}
       <nav className="fixed top-0 left-0 w-full z-50 p-6 flex justify-between items-center pointer-events-none">
         <button 
@@ -179,8 +197,46 @@ const VillaDetail = () => {
           </svg>
           BACK
         </button>
-        <div className="bg-white/10 backdrop-blur-md p-2 rounded-lg border border-white/10">
-          <img src="/images/nav-logo.svg" alt="Logo" className="w-16 md:w-20 opacity-100" />
+        
+        <div className="relative pointer-events-auto">
+          <button 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="bg-white/10 backdrop-blur-md p-2 rounded-lg border border-white/10 hover:bg-white/20 transition-all duration-300"
+          >
+            <img src="/images/nav-logo.svg" alt="Logo" className="w-16 md:w-20 opacity-100" />
+          </button>
+
+          {isMenuOpen && (
+            <div className="absolute top-full right-0 mt-2 w-56 bg-dark-brown/95 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-2xl animate-fade-in flex flex-col">
+              {['the-grove', 'the-estate', 'the-courtyard'].map((id) => {
+                const v = villaDetails[id];
+                return (
+                  <button
+                    key={v.id}
+                    onClick={() => {
+                      navigate(`/villa/${v.id}`);
+                      setIsMenuOpen(false);
+                    }}
+                    className={`px-6 py-4 text-left text-sm font-bold uppercase tracking-wide transition-colors duration-300 border-b border-white/5 last:border-none ${
+                      v.id === villaId
+                        ? "text-light-brown bg-white/5"
+                        : "text-white hover:bg-white/10 hover:text-light-brown"
+                    }`}
+                  >
+                    {v.name}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          
+          {/* Backdrop to close menu */}
+          {isMenuOpen && (
+            <div 
+              className="fixed inset-0 z-[-1]" 
+              onClick={() => setIsMenuOpen(false)}
+            />
+          )}
         </div>
       </nav>
 
@@ -285,32 +341,57 @@ const VillaDetail = () => {
           
           {/* Tabs Navigation */}
           <div className="flex flex-wrap justify-center gap-3 mb-12">
-            {villa.floorPlans.map((plan, i) => {
-              let tabLabel = plan.floor;
-              // For The Grove (4 floor plans): Show "Soleil - 1", "Soleil - 2", "Ember - 1", "Ember - 2"
-              // For Estate/Courtyard (2 floor plans): Show "East Facing", "West Facing"
-              if (plan.variant && plan.floor.toLowerCase().includes("facing") && villa.floorPlans.length > 2) {
-                const suffix = plan.floor.toLowerCase().includes("east") ? "1" : "2";
-                tabLabel = `${plan.variant} - ${suffix}`;
-              }
-              
-              return (
-                <button
-                  key={i}
-                  onClick={() => {
-                    setActiveFloorIndex(i);
-                    setActiveImageIndex(0); // Reset to first image when changing floor plan
-                  }}
-                  className={`px-6 py-3 rounded-full font-bold text-sm uppercase tracking-wide transition-all duration-300 border-2 ${
-                    activeFloorIndex === i
-                      ? "bg-white text-dark-brown border-white shadow-lg scale-105"
-                      : "bg-transparent text-white/70 border-white/20 hover:bg-white/10 hover:text-white hover:border-white/40"
-                  }`}
-                >
-                  {tabLabel}
-                </button>
-              );
-            })}
+            {hasMultiplePlansPerVariant ? (
+              // Detailed Tabs (e.g. The Grove: Soleil - 1, Soleil - 2, etc.)
+              villa.floorPlans.map((plan, i) => {
+                // Determine label suffix based on order within the same variant
+                const variantPlans = villa.floorPlans.filter(p => p.variant === plan.variant);
+                const indexInVariant = variantPlans.indexOf(plan);
+                const suffix = indexInVariant + 1;
+                const tabLabel = `${plan.variant} - ${suffix}`;
+
+                return (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      setActiveFloorIndex(i);
+                      setActiveImageIndex(0);
+                    }}
+                    className={`px-8 py-3 rounded-full font-bold text-sm uppercase tracking-wide transition-all duration-300 border-2 ${
+                      activeFloorIndex === i
+                        ? "bg-white text-dark-brown border-white shadow-lg scale-105"
+                        : "bg-transparent text-white/70 border-white/20 hover:bg-white/10 hover:text-white hover:border-white/40"
+                    }`}
+                  >
+                    {tabLabel}
+                  </button>
+                );
+              })
+            ) : (
+              // Simple Tabs (e.g. Estate: Soleil, Ember)
+              uniqueVariants.map((variant, i) => {
+                // Find the index of this variant's plan
+                const planIndex = villa.floorPlans.findIndex(p => p.variant === variant);
+                const isActive = villa.floorPlans[activeFloorIndex].variant === variant;
+                
+                return (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      setActiveFloorIndex(planIndex);
+                      setActiveImageIndex(0);
+                    }}
+                    className={`px-8 py-3 rounded-full font-bold text-sm uppercase tracking-wide transition-all duration-300 border-2 ${
+                      isActive
+                        ? "bg-white text-dark-brown border-white shadow-lg scale-105"
+                        : "bg-transparent text-white/70 border-white/20 hover:bg-white/10 hover:text-white hover:border-white/40"
+                    }`}
+                  >
+                    {variant}
+                  </button>
+                );
+              })
+            )}
           </div>
 
           {/* Floor Plan Display */}
@@ -318,27 +399,30 @@ const VillaDetail = () => {
             {/* Left Column - Plan Details (2 cols) */}
             <div className="lg:col-span-2 flex flex-col justify-center space-y-6">
               <div className="floor-plan-item">
-                {villa.floorPlans[activeFloorIndex].variant && (
+                {activePlan?.variant && (
                   <div className="mb-4">
                     <span className="inline-block px-4 py-1 bg-light-brown/20 text-light-brown rounded-full text-xs font-bold uppercase tracking-wider">
-                      {villa.floorPlans[activeFloorIndex].variant} Variant
+                      {activePlan.variant} Variant
                     </span>
                   </div>
                 )}
                 
-                <h3 className="text-3xl md:text-4xl font-bold uppercase mb-3 text-white">
-                  {villa.floorPlans[activeFloorIndex].floor}
-                </h3>
+                {/* Facing Heading (Single) */}
+                <div className="flex flex-col gap-2 mb-3">
+                  <h3 className="text-3xl md:text-4xl font-bold uppercase mb-3 text-white">
+                    {activePlan?.floor}
+                  </h3>
+                </div>
                 
                 <div className="flex items-center gap-4 mb-6">
                   <span className="text-light-brown text-xl font-mono">
-                    {villa.floorPlans[activeFloorIndex].sqft}
+                    {activePlan?.sqft}
                   </span>
                 </div>
 
-                {villa.floorPlans[activeFloorIndex].description && (
+                {activePlan?.description && (
                   <p className="text-white/80 text-base mb-6 leading-relaxed">
-                    {villa.floorPlans[activeFloorIndex].description}
+                    {activePlan.description}
                   </p>
                 )}
 
@@ -347,7 +431,7 @@ const VillaDetail = () => {
                     Key Features
                   </h4>
                   <div className="grid grid-cols-1 gap-2">
-                    {villa.floorPlans[activeFloorIndex].features.map((feature, idx) => (
+                    {activePlan?.features.map((feature, idx) => (
                       <div key={idx} className="flex items-start gap-3">
                         <span className="w-1.5 h-1.5 bg-light-brown rounded-full mt-2 flex-shrink-0" />
                         <span className="text-white/70 text-sm">{feature}</span>
@@ -361,7 +445,10 @@ const VillaDetail = () => {
             {/* Right Column - Floor Plan Image Carousel (3 cols) */}
             <div className="lg:col-span-3 floor-plan-item">
               <div className="bg-black/20 rounded-2xl overflow-hidden border border-white/10 relative group aspect-[4/3] lg:aspect-auto lg:h-[600px]">
-                <div className="absolute inset-0 flex items-center justify-center p-8 pb-24">
+                <div 
+                   className="absolute inset-0 flex items-center justify-center p-8 pb-24 cursor-zoom-in"
+                   onClick={() => setIsModalOpen(true)}
+                >
                   {(() => {
                     const currentPlan = villa.floorPlans[activeFloorIndex];
                     const images = Array.isArray(currentPlan.images) ? currentPlan.images : [{ label: currentPlan.floor, image: currentPlan.image }];
@@ -489,6 +576,51 @@ const VillaDetail = () => {
       </section>
 
       <FooterSection />
+
+      {/* Image Modal */}
+      {isModalOpen && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 md:p-8 animate-fade-in"
+          onClick={() => setIsModalOpen(false)}
+        >
+          <button 
+            className="absolute top-6 right-6 text-white hover:text-light-brown transition-colors z-50 bg-black/50 p-2 rounded-full border border-white/10"
+            onClick={() => setIsModalOpen(false)}
+          >
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          
+          <div 
+            className="relative w-full max-w-7xl max-h-[90vh] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {(() => {
+              const currentPlan = villa.floorPlans[activeFloorIndex];
+              const images = Array.isArray(currentPlan.images) ? currentPlan.images : [{ label: currentPlan.floor, image: currentPlan.image }];
+              const currentImage = images[activeImageIndex] || images[0];
+              
+              return (
+                <img 
+                  src={currentImage.image} 
+                  alt={currentImage.label || currentPlan.floor}
+                  className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                />
+              );
+            })()}
+            
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 text-white text-sm">
+              {(() => {
+                const currentPlan = villa.floorPlans[activeFloorIndex];
+                const images = Array.isArray(currentPlan.images) ? currentPlan.images : [{ label: currentPlan.floor }];
+                return images[activeImageIndex]?.label || currentPlan.floor;
+              })()}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
