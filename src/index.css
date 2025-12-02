@@ -85,6 +85,15 @@ body::-webkit-scrollbar {
 
       .hero-title {
         @apply text-light-brown xl:text-[6rem] lg:text-7xl md:text-6xl sm:text-5xl text-[2.5rem] font-bold uppercase leading-[1.1] tracking-tight mb-4 sm:mb-5 md:mb-6 text-center max-w-full;
+        word-break: keep-all;
+        overflow-wrap: normal;
+        hyphens: none;
+      }
+
+      .hero-title .word {
+        display: inline-block;
+        white-space: nowrap;
+        margin-right: 0.25em;
       }
 
       .hero-text-scroll {

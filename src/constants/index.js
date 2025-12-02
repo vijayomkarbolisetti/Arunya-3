@@ -6,6 +6,12 @@
 // Villa Types for the villa showcase slider
 const flavorlists = [
   {
+    name: "The Grove",
+    color: "blue",
+    rotation: "md:rotate-[-8deg] rotate-0",
+    sqft: "5,650 sq.ft",
+  },
+  {
     name: "The Estate",
     color: "brown",
     rotation: "md:rotate-[-8deg] rotate-0",
@@ -16,12 +22,6 @@ const flavorlists = [
     color: "red",
     rotation: "md:rotate-[8deg] rotate-0",
     sqft: "6,600 sq.ft",
-  },
-  {
-    name: "The Grove",
-    color: "blue",
-    rotation: "md:rotate-[-8deg] rotate-0",
-    sqft: "5,650 sq.ft",
   },
 ];
 

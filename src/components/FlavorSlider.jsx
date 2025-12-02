@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import { flavorlists } from "../constants";
 import gsap from "gsap";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 
@@ -14,6 +14,14 @@ const FlavorSlider = () => {
   const [phoneError, setPhoneError] = useState("");
   const [pendingVillaId, setPendingVillaId] = useState(null);
 
+  // Check localStorage on mount
+  useEffect(() => {
+    const verified = localStorage.getItem("phoneVerified");
+    if (verified === "true") {
+      setIsPhoneVerified(true);
+    }
+  }, []);
+
   const isTablet = useMediaQuery({
     query: "(max-width: 1024px)",
   });
@@ -25,13 +33,13 @@ const FlavorSlider = () => {
 
   const handleVillaClick = (flavor) => {
     const villaId = getVillaId(flavor.name);
-    
+
     if (!isPhoneVerified) {
       setPendingVillaId(villaId);
       setShowPhonePopup(true);
       return;
     }
-    
+
     navigate(`/villa/${villaId}`);
   };
 
@@ -41,9 +49,14 @@ const FlavorSlider = () => {
       setPhoneError("Please enter a valid phone number");
       return;
     }
+    
+    // Store verification in localStorage
+    localStorage.setItem("phoneVerified", "true");
+    localStorage.setItem("userPhone", phoneNumber);
+    
     setIsPhoneVerified(true);
     setShowPhonePopup(false);
-    
+
     // Navigate to the pending villa
     if (pendingVillaId) {
       navigate(`/villa/${pendingVillaId}`);
@@ -53,11 +66,19 @@ const FlavorSlider = () => {
 
   useGSAP(() => {
     // Force reset all elements to initial positions
-    gsap.set([".general-title", ".first-text-split", ".flavor-text-scroll", ".second-text-split"], {
-      xPercent: 0,
-      x: 0,
-      clearProps: "transform",
-    });
+    gsap.set(
+      [
+        ".general-title",
+        ".first-text-split",
+        ".flavor-text-scroll",
+        ".second-text-split",
+      ],
+      {
+        xPercent: 0,
+        x: 0,
+        clearProps: "transform",
+      }
+    );
 
     if (sliderRef.current) {
       // Set slider initial position
@@ -65,7 +86,8 @@ const FlavorSlider = () => {
     }
 
     if (!isTablet && sliderRef.current) {
-      const scrollAmount = sliderRef.current.scrollWidth - sliderRef.current.offsetWidth;
+      const scrollAmount =
+        sliderRef.current.scrollWidth - sliderRef.current.offsetWidth;
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -96,7 +118,7 @@ const FlavorSlider = () => {
             >
               {/* Overlay on hover */}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 z-20" />
-              
+
               {/* Click indicator */}
               <div className="absolute top-4 right-4 z-30 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-gray-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 View Details →
@@ -108,7 +130,9 @@ const FlavorSlider = () => {
                 className="drinks transition-transform duration-300 group-hover:scale-110"
               />
 
-              <h1 className="transition-transform duration-300 group-hover:scale-105">{flavor.name}</h1>
+              <h1 className="transition-transform duration-300 group-hover:scale-105">
+                {flavor.name}
+              </h1>
             </div>
           ))}
         </div>

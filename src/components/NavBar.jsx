@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const NavBar = () => {
@@ -10,6 +10,14 @@ const NavBar = () => {
   const [phoneError, setPhoneError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Check localStorage on mount
+  useEffect(() => {
+    const verified = localStorage.getItem("phoneVerified");
+    if (verified === "true") {
+      setIsPhoneVerified(true);
+    }
+  }, []);
 
   const menuItems = [
     { label: "Home", id: "hero", path: "/" },
@@ -23,85 +31,17 @@ const NavBar = () => {
         {
           label: "The Grove",
           id: "the-grove",
-          hasSubmenu: true,
-          submenu: [
-            {
-              label: "Soleil",
-              id: "grove-soleil",
-              hasSubmenu: true,
-              submenu: [
-                {
-                  label: "Soleil - 1",
-                  id: "grove-soleil-east",
-                  path: "/villa/the-grove#floor-plans",
-                  floorIndex: 0,
-                },
-                {
-                  label: "Soleil - 2",
-                  id: "grove-soleil-west",
-                  path: "/villa/the-grove#floor-plans",
-                  floorIndex: 1,
-                },
-              ],
-            },
-            {
-              label: "Ember",
-              id: "grove-ember",
-              hasSubmenu: true,
-              submenu: [
-                {
-                  label: "Ember - 1",
-                  id: "grove-ember-east",
-                  path: "/villa/the-grove#floor-plans",
-                  floorIndex: 2,
-                },
-                {
-                  label: "Ember - 2",
-                  id: "grove-ember-west",
-                  path: "/villa/the-grove#floor-plans",
-                  floorIndex: 3,
-                },
-              ],
-            },
-          ],
+          path: "/villa/the-grove",
         },
         {
           label: "The Courtyard",
           id: "the-courtyard",
-          hasSubmenu: true,
-          submenu: [
-            {
-              label: "Soleil",
-              id: "courtyard-soleil",
-              path: "/villa/the-courtyard#floor-plans",
-              floorIndex: 0,
-            },
-            {
-              label: "Ember",
-              id: "courtyard-ember",
-              path: "/villa/the-courtyard#floor-plans",
-              floorIndex: 1,
-            },
-          ],
+          path: "/villa/the-courtyard",
         },
         {
           label: "The Estate",
           id: "the-estate",
-          hasSubmenu: true,
-          submenu: [
-            {
-              label: "Soleil",
-              id: "estate-soleil",
-              path: "/villa/the-estate#floor-plans",
-              floorIndex: 0,
-            },
-            {
-              label: "Ember",
-              id: "estate-ember",
-              path: "/villa/the-estate#floor-plans",
-              floorIndex: 1,
-            },
-          ],
+          path: "/villa/the-estate",
         },
       ],
     },
@@ -133,6 +73,11 @@ const NavBar = () => {
       setPhoneError("Please enter a valid phone number");
       return;
     }
+    
+    // Store verification in localStorage
+    localStorage.setItem("phoneVerified", "true");
+    localStorage.setItem("userPhone", phoneNumber);
+    
     setIsPhoneVerified(true);
     setShowPhonePopup(false);
     toggleSubmenu("plans");

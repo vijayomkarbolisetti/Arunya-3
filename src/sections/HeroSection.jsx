@@ -26,7 +26,7 @@ const HeroSection = () => {
 
   useGSAP(() => {
     const titleSplit = SplitText.create(".hero-title", {
-      type: "chars",
+      type: "words,chars",
     });
 
     const tl = gsap.timeline({
