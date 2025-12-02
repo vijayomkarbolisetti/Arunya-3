@@ -94,21 +94,32 @@ const FlavorSlider = () => {
     }
 
     if (!isTablet && sliderRef.current) {
-      const scrollAmount =
-        sliderRef.current.scrollWidth - sliderRef.current.offsetWidth;
+      // Force a reflow to ensure dimensions are calculated correctly in Safari
+      const slider = sliderRef.current;
+      slider.offsetHeight; // Force reflow
+      
+      const scrollAmount = slider.scrollWidth - slider.offsetWidth;
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: ".slider-wrapper",
           start: "top top",
-          end: `+=${scrollAmount + 1500}px`,
-          scrub: true,
+          end: `+=${scrollAmount + 1500}`,
+          scrub: 1,
           pin: ".flavor-section",
+          pinSpacing: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          // Force Safari to recalculate on refresh
+          onRefresh: (self) => {
+            const newScrollAmount = slider.scrollWidth - slider.offsetWidth;
+            self.vars.end = `+=${newScrollAmount + 1500}`;
+          },
         },
       });
 
-      tl.to(sliderRef.current, {
-        x: `-${scrollAmount}px`,
+      tl.to(slider, {
+        x: () => -(slider.scrollWidth - slider.offsetWidth),
         ease: "none",
       });
     }
