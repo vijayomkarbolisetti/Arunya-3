@@ -362,27 +362,15 @@ export const villaDetails = {
       },
       {
         variant: "Soleil",
-        floor: "West Facing",
+        floor: "East Facing",
         features: ["Living Room", "Dining Area", "Modern Kitchen", "Master Suite", "2 Guest Rooms", "Study Area", "3 Bathrooms", "Balconies", "Utility"],
         sqft: "5,650 sq.ft",
         images: [
-          { label: "Ground Floor", image: "/floor/WEST  STYLE A 01.jpg" },
-          { label: "First Floor", image: "/floor/WEST  STYLE A 01.jpg" },
-          { label: "Second Floor", image: "/floor/WEST  STYLE A 01.jpg" },
+          { label: "Ground Floor", image: "/floor/EAST STYLE A 03.jpg" },
+          { label: "First Floor", image: "/floor/EAST STYLE A 03.jpg" },
+          { label: "Second Floor", image: "/floor/EAST STYLE A 03.jpg" },
         ],
-        description: "Soleil West facing plan maximizes afternoon and evening natural light"
-      },
-      {
-        variant: "Ember",
-        floor: "East Facing",
-        features: ["Open Living Area", "Gourmet Kitchen", "Master Bedroom with Walk-in", "2 Bedrooms", "Flex Space", "3.5 Bathrooms", "Private Terrace", "Utility"],
-        sqft: "5,650 sq.ft",
-        images: [
-          { label: "Ground Floor", image: "/floor/EAST STYLE B 01.jpg" },
-          { label: "First Floor", image: "/floor/EAST STYLE B 01.jpg" },
-          { label: "Second Floor", image: "/floor/EAST STYLE B 01.jpg" },
-        ],
-        description: "Ember East facing plan with emphasis on spacious entertaining areas"
+        description: "Soleil East facing plan with alternate layout optimizing morning sunlight"
       },
       {
         variant: "Ember",
@@ -395,6 +383,18 @@ export const villaDetails = {
           { label: "Second Floor", image: "/floor/WEST  STYLE B 01.jpg" },
         ],
         description: "Ember West facing plan designed for sunset views and evening ambiance"
+      },
+      {
+        variant: "Ember",
+        floor: "West Facing",
+        features: ["Open Living Area", "Gourmet Kitchen", "Master Bedroom with Walk-in", "2 Bedrooms", "Flex Space", "3.5 Bathrooms", "Private Terrace", "Utility"],
+        sqft: "5,650 sq.ft",
+        images: [
+          { label: "Ground Floor", image: "/floor/WEST  STYLE B 02.jpg" },
+          { label: "First Floor", image: "/floor/WEST  STYLE B 02.jpg" },
+          { label: "Second Floor", image: "/floor/WEST  STYLE B 02.jpg" },
+        ],
+        description: "Ember West facing plan with alternate layout maximizing evening light"
       },
     ],
 
