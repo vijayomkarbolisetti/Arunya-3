@@ -54,7 +54,7 @@ const BenefitSection = () => {
 
           <div className="mt-12 sm:mt-16 md:mt-20 col-center w-full gap-2 sm:gap-3 md:gap-4">
             <ClipPathTitle
-              title={"Sunrise Facing"}
+              title={"Sun-drenched"}
               color={theme.presets.benefitTitles.shelfStable.color}
               bg={theme.presets.benefitTitles.shelfStable.bg}
               className={"first-title"}
@@ -65,7 +65,9 @@ const BenefitSection = () => {
               color={theme.presets.benefitTitles.proteinCaffeine.color}
               bg={theme.presets.benefitTitles.proteinCaffeine.bg}
               className={"second-title"}
-              borderColor={theme.presets.benefitTitles.proteinCaffeine.borderColor}
+              borderColor={
+                theme.presets.benefitTitles.proteinCaffeine.borderColor
+              }
             />
             <ClipPathTitle
               title={"Gated Community"}
