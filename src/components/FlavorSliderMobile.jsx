@@ -33,6 +33,10 @@ const FlavorSliderMobile = () => {
     }
 
     navigate(`/villa/${villaId}`);
+    // Scroll to top after navigation
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
   };
 
   const handlePhoneSubmit = (e) => {
@@ -49,10 +53,14 @@ const FlavorSliderMobile = () => {
     setIsPhoneVerified(true);
     setShowPhonePopup(false);
 
-    // Navigate to the pending villa
+    // Navigate to the pending villa and scroll to top
     if (pendingVillaId) {
       navigate(`/villa/${pendingVillaId}`);
       setPendingVillaId(null);
+      // Scroll to top after a small delay to ensure navigation completes
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 100);
     }
   };
 

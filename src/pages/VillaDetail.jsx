@@ -287,8 +287,9 @@ const VillaDetail = () => {
           <div className="flex flex-wrap justify-center gap-3 mb-12">
             {villa.floorPlans.map((plan, i) => {
               let tabLabel = plan.floor;
-              // Only add suffix for multi-variant floor plans (Grove)
-              if (plan.variant && plan.floor.toLowerCase().includes("facing")) {
+              // For The Grove (4 floor plans): Show "Soleil - 1", "Soleil - 2", "Ember - 1", "Ember - 2"
+              // For Estate/Courtyard (2 floor plans): Show "East Facing", "West Facing"
+              if (plan.variant && plan.floor.toLowerCase().includes("facing") && villa.floorPlans.length > 2) {
                 const suffix = plan.floor.toLowerCase().includes("east") ? "1" : "2";
                 tabLabel = `${plan.variant} - ${suffix}`;
               }

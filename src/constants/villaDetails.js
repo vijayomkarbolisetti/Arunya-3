@@ -87,7 +87,7 @@ export const villaDetails = {
     floorPlans: [
       {
         variant: "Soleil",
-        floor: "Soleil",
+        floor: "East Facing",
         features: ["Grand Entrance", "Double Height Living", "Formal Dining", "Show Kitchen", "Master Suite", "Home Theater", "Gym", "Terrace Garden"],
         sqft: "7,150 sq.ft",
         images: [
@@ -95,11 +95,11 @@ export const villaDetails = {
           { label: "First Floor", image: "/floor/EAST STYLE A 03.jpg" },
           { label: "Second Floor", image: "/floor/EAST STYLE A 03.jpg" },
         ],
-        description: "Soleil estate designed for grandeur and luxury living"
+        description: "East facing estate designed for grandeur and luxury living with morning sunlight"
       },
       {
         variant: "Ember",
-        floor: "Ember",
+        floor: "West Facing",
         features: ["Contemporary Layout", "Open Plan Living", "Chef's Kitchen", "Family Lounge", "Master Wing", "Entertainment Zone", "Spa", "Sky Deck"],
         sqft: "7,150 sq.ft",
         images: [
@@ -107,7 +107,7 @@ export const villaDetails = {
           { label: "First Floor", image: "/floor/EAST STYLE B 03.jpg" },
           { label: "Second Floor", image: "/floor/EAST STYLE B 03.jpg" },
         ],
-        description: "Ember estate focusing on modern family connectivity"
+        description: "West facing estate focusing on modern family connectivity with evening views"
       },
     ],
 
@@ -218,7 +218,7 @@ export const villaDetails = {
     floorPlans: [
       {
         variant: "Soleil",
-        floor: "Soleil",
+        floor: "East Facing",
         features: ["Living Room", "Dining Area", "Modern Kitchen", "Guest Room", "Master Suite", "Family Lounge", "Study", "Terrace"],
         sqft: "6,600 sq.ft",
         images: [
@@ -226,11 +226,11 @@ export const villaDetails = {
           { label: "First Floor", image: "/floor/EAST STYLE A 02.jpg" },
           { label: "Second Floor", image: "/floor/EAST STYLE A 02.jpg" },
         ],
-        description: "Soleil courtyard villa with central light well"
+        description: "East facing courtyard villa with central light well and morning sunlight"
       },
       {
         variant: "Ember",
-        floor: "Ember",
+        floor: "West Facing",
         features: ["Open Layout", "Gourmet Kitchen", "Master Bedroom", "3 Guest Rooms", "Home Office", "Recreation Room", "Private Garden"],
         sqft: "6,600 sq.ft",
         images: [
@@ -238,7 +238,7 @@ export const villaDetails = {
           { label: "First Floor", image: "/floor/EAST STYLE B 02.jpg" },
           { label: "Second Floor", image: "/floor/EAST STYLE B 02.jpg" },
         ],
-        description: "Ember courtyard villa designed for indoor-outdoor living"
+        description: "West facing courtyard villa designed for indoor-outdoor living with evening views"
       },
     ],
 
