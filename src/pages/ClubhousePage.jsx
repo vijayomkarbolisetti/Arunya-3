@@ -1,19 +1,162 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import NavBar from "../components/NavBar";
 import FooterSection from "../sections/FooterSection";
 import { SplitText } from "gsap/all";
+import { Link } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
-import { Link } from "react-router-dom";
+const FloorPanel = ({ floor, index }) => {
+  const panelRef = useRef(null);
+  const [activeTab, setActiveTab] = useState(0);
+
+  useGSAP(
+    () => {
+      const panel = panelRef.current;
+
+      // Panel Scroll Animation
+      gsap.fromTo(
+        panel,
+        {
+          opacity: 0,
+          y: 100,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scrollTrigger: {
+            trigger: panel,
+            start: "top 80%",
+            end: "top 20%",
+            scrub: 1,
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+
+      // Animate image
+      gsap.from(panel.querySelector(".floor-image"), {
+        scale: 0.8,
+        opacity: 0,
+        scrollTrigger: {
+          trigger: panel,
+          start: "top 70%",
+          end: "top 30%",
+          scrub: 1,
+        },
+      });
+
+      // Animate text content
+      gsap.from(panel.querySelector(".floor-text"), {
+        x: -50,
+        opacity: 0,
+        scrollTrigger: {
+          trigger: panel,
+          start: "top 60%",
+          end: "top 20%",
+          scrub: 1,
+        },
+      });
+    },
+    { scope: panelRef }
+  );
+
+  return (
+    <div
+      ref={panelRef}
+      className="floor-panel min-h-[70vh] grid md:grid-cols-2 gap-12 items-center"
+    >
+      {/* Image Area */}
+      <div
+        className={`relative aspect-[4/3] overflow-hidden rounded-lg shadow-2xl group floor-image ${
+          index % 2 === 1 ? "md:order-2" : ""
+        }`}
+      >
+        <img
+          src={floor.tabs ? floor.tabs[activeTab].image : floor.image}
+          alt={floor.title}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+
+        {/* Floor Number Badge */}
+        <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-6 py-3 rounded-lg">
+          <span className="text-4xl font-bold text-dark-brown">
+            {floor.id === 4 ? "T" : floor.id}
+          </span>
+        </div>
+      </div>
+
+      {/* Text Details */}
+      <div
+        className={`space-y-8 floor-text ${
+          index % 2 === 1 ? "md:order-1" : ""
+        }`}
+      >
+        <div>
+          <p className="text-sm font-bold uppercase tracking-widest text-light-brown mb-2">
+            {floor.label}
+          </p>
+          <h2 className="text-5xl md:text-7xl font-serif text-dark-brown mb-6 leading-tight">
+            {floor.title}
+          </h2>
+          <div className="w-24 h-1 bg-light-brown mb-8" />
+          <p className="text-xl text-gray-600 leading-relaxed">
+            {floor.description}
+          </p>
+        </div>
+
+        {floor.tabs ? (
+          <div className="space-y-4">
+            {floor.tabs.map((tab, i) => (
+              <div
+                key={i}
+                onClick={() => setActiveTab(i)}
+                className={`flex items-center gap-4 text-xl font-medium cursor-pointer transition-colors duration-300 ${
+                  activeTab === i
+                    ? "text-dark-brown"
+                    : "text-gray-400 hover:text-light-brown"
+                }`}
+              >
+                <span
+                  className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold transition-colors duration-300 ${
+                    activeTab === i
+                      ? "bg-light-brown text-white"
+                      : "bg-gray-200 text-gray-500"
+                  }`}
+                >
+                  {i + 1}
+                </span>
+                {tab.name}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <ul className="space-y-4">
+            {floor.features.map((feature, i) => (
+              <li
+                key={i}
+                className="flex items-center gap-4 text-xl font-medium text-dark-brown"
+              >
+                <span className="flex-shrink-0 w-8 h-8 rounded-full bg-light-brown/20 flex items-center justify-center text-light-brown font-bold">
+                  {i + 1}
+                </span>
+                {feature}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const ClubhousePage = () => {
   const containerRef = useRef(null);
   const floorsContainerRef = useRef(null);
-  const floorsRef = useRef([]);
 
   const floors = [
     {
@@ -28,6 +171,28 @@ const ClubhousePage = () => {
         "Provisional Store",
         "Banquet Hall",
       ],
+      tabs: [
+        {
+          name: "Swimming Pool",
+          image:
+            "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=1200&h=800&fit=crop",
+        },
+        {
+          name: "Pre-Function Area",
+          image:
+            "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1200&h=800&fit=crop",
+        },
+        {
+          name: "Provisional Store",
+          image:
+            "https://images.unsplash.com/photo-1604719312566-b7cb9663483b?w=1200&h=800&fit=crop",
+        },
+        {
+          name: "Banquet Hall",
+          image:
+            "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1200&h=800&fit=crop",
+        },
+      ],
       image:
         "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=1200&h=800&fit=crop",
     },
@@ -38,6 +203,28 @@ const ClubhousePage = () => {
       description:
         "A dedicated space for entertainment and relaxation, featuring guest suites for your loved ones.",
       features: ["Mini Theatre", "Guest Suites", "Lounge Area", "Coffee Shop"],
+      tabs: [
+        {
+          name: "Mini Theatre",
+          image:
+            "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200&h=800&fit=crop",
+        },
+        {
+          name: "Guest Suites",
+          image:
+            "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1200&h=800&fit=crop",
+        },
+        {
+          name: "Lounge Area",
+          image:
+            "https://images.unsplash.com/photo-1554995207-c18c203602cb?w=1200&h=800&fit=crop",
+        },
+        {
+          name: "Coffee Shop",
+          image:
+            "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&h=800&fit=crop",
+        },
+      ],
       image:
         "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=1200&h=800&fit=crop",
     },
@@ -53,6 +240,28 @@ const ClubhousePage = () => {
         "Table Tennis",
         "Billiards",
       ],
+      tabs: [
+        {
+          name: "Indoor Badminton",
+          image:
+            "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=1200&h=800&fit=crop",
+        },
+        {
+          name: "Squash Court",
+          image:
+            "https://images.unsplash.com/photo-1505250469679-253c737ef063?w=1200&h=800&fit=crop",
+        },
+        {
+          name: "Table Tennis",
+          image:
+            "https://images.unsplash.com/photo-1534158914592-062992bbe900?w=1200&h=800&fit=crop",
+        },
+        {
+          name: "Billiards",
+          image:
+            "https://images.unsplash.com/photo-1585671960231-97e5a0459583?w=1200&h=800&fit=crop",
+        },
+      ],
       image:
         "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=1200&h=800&fit=crop",
     },
@@ -63,6 +272,28 @@ const ClubhousePage = () => {
       description:
         "Elevate your wellness journey with world-class fitness and rejuvenation centers.",
       features: ["Gymnasium", "Yoga / Aerobics", "Spa & Sauna", "Health Cafe"],
+      tabs: [
+        {
+          name: "Gymnasium",
+          image:
+            "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&h=800&fit=crop",
+        },
+        {
+          name: "Yoga / Aerobics",
+          image:
+            "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=1200&h=800&fit=crop",
+        },
+        {
+          name: "Spa & Sauna",
+          image:
+            "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=1200&h=800&fit=crop",
+        },
+        {
+          name: "Health Cafe",
+          image:
+            "https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=1200&h=800&fit=crop",
+        },
+      ],
       image:
         "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&h=800&fit=crop",
     },
@@ -77,6 +308,28 @@ const ClubhousePage = () => {
         "Sky Deck",
         "Barbeque Station",
         "Stargazing Point",
+      ],
+      tabs: [
+        {
+          name: "Infinity Pool",
+          image:
+            "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=1200&h=800&fit=crop",
+        },
+        {
+          name: "Sky Deck",
+          image:
+            "https://images.unsplash.com/photo-1533105079780-92b9be482077?w=1200&h=800&fit=crop",
+        },
+        {
+          name: "Barbeque Station",
+          image:
+            "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1200&h=800&fit=crop",
+        },
+        {
+          name: "Stargazing Point",
+          image:
+            "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&h=800&fit=crop",
+        },
       ],
       image:
         "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&h=800&fit=crop",
@@ -112,54 +365,6 @@ const ClubhousePage = () => {
         opacity: 0,
         duration: 1,
         ease: "power2.out",
-      });
-
-      // Floor Explorer Scroll Animation
-      const floorPanels = gsap.utils.toArray(".floor-panel");
-
-      floorPanels.forEach((panel) => {
-        gsap.fromTo(
-          panel,
-          {
-            opacity: 0,
-            y: 100,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scrollTrigger: {
-              trigger: panel,
-              start: "top 80%",
-              end: "top 20%",
-              scrub: 1,
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-
-        // Animate image
-        gsap.from(panel.querySelector(".floor-image"), {
-          scale: 0.8,
-          opacity: 0,
-          scrollTrigger: {
-            trigger: panel,
-            start: "top 70%",
-            end: "top 30%",
-            scrub: 1,
-          },
-        });
-
-        // Animate text content
-        gsap.from(panel.querySelector(".floor-text"), {
-          x: -50,
-          opacity: 0,
-          scrollTrigger: {
-            trigger: panel,
-            start: "top 60%",
-            end: "top 20%",
-            scrub: 1,
-          },
-        });
       });
 
       // Amenities Horizontal Scroll
@@ -235,66 +440,7 @@ const ClubhousePage = () => {
           {/* Floor Panels */}
           <div className="space-y-32 md:space-y-48">
             {floors.map((floor, index) => (
-              <div
-                key={floor.id}
-                ref={(el) => (floorsRef.current[index] = el)}
-                className="floor-panel min-h-[70vh] grid md:grid-cols-2 gap-12 items-center"
-              >
-                {/* Image Area */}
-                <div
-                  className={`relative aspect-[4/3] overflow-hidden rounded-lg shadow-2xl group floor-image ${
-                    index % 2 === 1 ? "md:order-2" : ""
-                  }`}
-                >
-                  <img
-                    src={floor.image}
-                    alt={floor.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-
-                  {/* Floor Number Badge */}
-                  <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-6 py-3 rounded-lg">
-                    <span className="text-4xl font-bold text-dark-brown">
-                      {floor.id === 4 ? "T" : floor.id}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Text Details */}
-                <div
-                  className={`space-y-8 floor-text ${
-                    index % 2 === 1 ? "md:order-1" : ""
-                  }`}
-                >
-                  <div>
-                    <p className="text-sm font-bold uppercase tracking-widest text-light-brown mb-2">
-                      {floor.label}
-                    </p>
-                    <h2 className="text-5xl md:text-7xl font-serif text-dark-brown mb-6 leading-tight">
-                      {floor.title}
-                    </h2>
-                    <div className="w-24 h-1 bg-light-brown mb-8" />
-                    <p className="text-xl text-gray-600 leading-relaxed">
-                      {floor.description}
-                    </p>
-                  </div>
-
-                  <ul className="space-y-4">
-                    {floor.features.map((feature, i) => (
-                      <li
-                        key={i}
-                        className="flex items-center gap-4 text-xl font-medium text-dark-brown"
-                      >
-                        <span className="flex-shrink-0 w-8 h-8 rounded-full bg-light-brown/20 flex items-center justify-center text-light-brown font-bold">
-                          {i + 1}
-                        </span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+              <FloorPanel key={floor.id} floor={floor} index={index} />
             ))}
           </div>
         </div>

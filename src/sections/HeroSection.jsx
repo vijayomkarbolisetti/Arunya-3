@@ -111,7 +111,7 @@ const HeroSection = () => {
             </div>
           </div> */}
           <h2 className="text-white">
-            Experience sunrise-facing luxury villas at Greenrich Highlands. 322
+            Experience sun-drenched luxury villas at Greenrich Highlands. 322
             exclusive homes nestled in 45 acres of tranquil paradise.
           </h2>
           <button className="hero-button" onClick={scrollToFlavors}>

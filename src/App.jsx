@@ -48,7 +48,7 @@ const HomePage = () => {
             <HeroSection />
             {/* <MessageSection /> */}
             <FlavorSection />
-            <NutritionSection />
+
             <ClubhouseSection />
             <CentralParkSection />
             {/* <ComparisonSection /> */}

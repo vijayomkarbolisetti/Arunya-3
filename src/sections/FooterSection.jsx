@@ -12,8 +12,7 @@ const FooterSection = () => {
       <div className="min-h-dvh 2xl:h-[110dvh] relative pt-16 sm:pt-20 md:pt-[15vh] lg:pt-[20vh] px-4 sm:px-6 md:px-8">
         <div className="overflow-hidden z-10">
           <h1 className="general-title text-center text-milk py-3 sm:py-4 md:py-5">
-            #LiveGreenRich
-          </h1>
+            #AarunyaVillas          </h1>
         </div>
 
         <div className="flex-center gap-3 sm:gap-4 md:gap-5 relative z-10 mt-8 sm:mt-12 md:mt-16 lg:mt-20">
@@ -62,7 +61,54 @@ const FooterSection = () => {
           </div>
         </div>
 
-        <div className="copyright-box">
+        {/* Location Maps Section */}
+        <div className="mt-20 sm:mt-28 grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16 px-0 sm:px-4 md:px-10">
+          {/* Office Location */}
+          <div className="space-y-6">
+            <h3 className="text-2xl sm:text-3xl font-serif text-milk">Office Location</h3>
+            <div className="w-full h-64 sm:h-80 rounded-xl overflow-hidden border border-milk/20 shadow-lg">
+              <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://maps.google.com/maps?q=Greenrich+Group+Kokapet+Hyderabad&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                frameBorder="0" 
+                scrolling="no" 
+                marginHeight="0" 
+                marginWidth="0"
+                className="filter grayscale hover:grayscale-0 transition-all duration-500"
+              ></iframe>
+            </div>
+            <p className="text-milk/80 text-base sm:text-lg font-light leading-relaxed">
+              <strong className="block text-milk font-medium mb-1">Greenrich Group</strong>
+              Plot No. 1, 2nd Floor, Gayatri Enclave,<br />
+              Gandipet Road, Kokapet, Hyderabad - 500075
+            </p>
+          </div>
+
+          {/* Site Location */}
+          <div className="space-y-6">
+            <h3 className="text-2xl sm:text-3xl font-serif text-milk">Site Location</h3>
+            <div className="w-full h-64 sm:h-80 rounded-xl overflow-hidden border border-milk/20 shadow-lg">
+              <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://maps.google.com/maps?q=Aarunya+Villas+Tukkuguda+Hyderabad&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                frameBorder="0" 
+                scrolling="no" 
+                marginHeight="0" 
+                marginWidth="0"
+                className="filter grayscale hover:grayscale-0 transition-all duration-500"
+              ></iframe>
+            </div>
+            <p className="text-milk/80 text-base sm:text-lg font-light leading-relaxed">
+              <strong className="block text-milk font-medium mb-1">Aarunya Villas</strong>
+              Tukkuguda, Srisailam Highway,<br />
+              Hyderabad (Near ORR Exit-14)
+            </p>
+          </div>
+        </div>
+
+        <div className="copyright-box mt-20 sm:mt-28">
           {/* The final row with copyright and legal links. */}
           <p>
             Copyright © 2025 Greenrich Highlands - Aarunya Villas - All Rights
