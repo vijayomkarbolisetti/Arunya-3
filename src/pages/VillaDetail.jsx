@@ -498,7 +498,7 @@ const VillaDetail = () => {
             <div className="lg:col-span-3 floor-plan-item">
               <div className="bg-black/20 rounded-2xl overflow-hidden border border-white/10 relative group aspect-[4/3] lg:aspect-auto lg:h-[600px]">
                 <div 
-                   className="absolute inset-0 flex items-center justify-center p-8 pb-24 cursor-zoom-in"
+                   className="absolute inset-0 flex items-center justify-center p-8 cursor-zoom-in"
                    onClick={() => setIsModalOpen(true)}
                 >
                   {(() => {
@@ -576,51 +576,7 @@ const VillaDetail = () => {
                   return null;
                 })()}
 
-                {/* Floor Thumbnail Previews */}
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3">
-                  {(() => {
-                    const currentPlan = villa.floorPlans[activeFloorIndex];
-                    const images = Array.isArray(currentPlan.images) ? currentPlan.images : [{ image: currentPlan.image, label: currentPlan.floor }];
-                    
-                    return images.map((img, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setActiveImageIndex(idx)}
-                        className={`relative group/thumb transition-all duration-300 ${
-                          activeImageIndex === idx
-                            ? "scale-110"
-                            : "scale-100 hover:scale-105"
-                        }`}
-                        aria-label={`View ${img.label || `floor ${idx + 1}`}`}
-                      >
-                        <div className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                          activeImageIndex === idx
-                            ? "border-white shadow-lg shadow-white/50"
-                            : "border-white/30 hover:border-white/60"
-                        }`}>
-                          <img
-                            src={img.image}
-                            alt={img.label}
-                            className="w-full h-full object-cover"
-                          />
-                          <div className={`absolute inset-0 bg-black transition-opacity duration-300 ${
-                            activeImageIndex === idx
-                              ? "opacity-0"
-                              : "opacity-40 group-hover/thumb:opacity-20"
-                          }`} />
-                        </div>
-                        {/* Label */}
-                        <div className={`absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-bold transition-all duration-300 ${
-                          activeImageIndex === idx
-                            ? "text-white"
-                            : "text-white/60 group-hover/thumb:text-white/80"
-                        }`}>
-                          {img.label}
-                        </div>
-                      </button>
-                    ));
-                  })()}
-                </div>
+
               </div>
             </div>
           </div>
