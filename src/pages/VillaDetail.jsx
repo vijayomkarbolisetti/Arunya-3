@@ -64,6 +64,18 @@ const VillaDetail = () => {
     }
   }, [villaId, villa]);
 
+  useEffect(() => {
+    if (isModalOpen) {
+      const modalContainer = document.getElementById('modal-scroll-container');
+      if (modalContainer) {
+        const target = modalContainer.children[activeImageIndex];
+        if (target) {
+          target.scrollIntoView({ behavior: 'instant' });
+        }
+      }
+    }
+  }, [isModalOpen]);
+
   useGSAP(() => {
     if (!villa) return;
 
@@ -348,7 +360,18 @@ const VillaDetail = () => {
                 const variantPlans = villa.floorPlans.filter(p => p.variant === plan.variant);
                 const indexInVariant = variantPlans.indexOf(plan);
                 const suffix = indexInVariant + 1;
-                const tabLabel = `${plan.variant} - ${suffix}`;
+                
+                let baseLabel = plan.variant;
+                if (plan.variant?.toLowerCase().includes("soleil")) baseLabel = "East Facing";
+                if (plan.variant?.toLowerCase().includes("ember")) baseLabel = "West Facing";
+
+                let tabLabel = baseLabel;
+                // Only append suffix for East/West facing or if there are multiple plans of the same variant
+                if (baseLabel === "East Facing" || baseLabel === "West Facing") {
+                  tabLabel = `${baseLabel} - ${suffix}`;
+                } else if (variantPlans.length > 1) {
+                   tabLabel = `${baseLabel} - ${suffix}`;
+                }
 
                 return (
                   <button
@@ -374,6 +397,10 @@ const VillaDetail = () => {
                 const planIndex = villa.floorPlans.findIndex(p => p.variant === variant);
                 const isActive = villa.floorPlans[activeFloorIndex].variant === variant;
                 
+                let tabLabel = variant;
+                if (variant?.toLowerCase().includes("soleil")) tabLabel = "East Facing";
+                if (variant?.toLowerCase().includes("ember")) tabLabel = "West Facing";
+                
                 return (
                   <button
                     key={i}
@@ -387,7 +414,7 @@ const VillaDetail = () => {
                         : "bg-transparent text-white/70 border-white/20 hover:bg-white/10 hover:text-white hover:border-white/40"
                     }`}
                   >
-                    {variant}
+                    {tabLabel}
                   </button>
                 );
               })
@@ -428,15 +455,40 @@ const VillaDetail = () => {
 
                 <div className="space-y-3 border-t border-white/20 pt-6">
                   <h4 className="text-sm font-bold uppercase tracking-wider text-white/60 mb-4">
-                    Key Features
+                    Floor Levels
                   </h4>
-                  <div className="grid grid-cols-1 gap-2">
-                    {activePlan?.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-start gap-3">
-                        <span className="w-1.5 h-1.5 bg-light-brown rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-white/70 text-sm">{feature}</span>
-                      </div>
-                    ))}
+                  <div className="flex flex-col gap-4">
+                    {(() => {
+                      const currentPlan = villa.floorPlans[activeFloorIndex];
+                      const images = Array.isArray(currentPlan.images) ? currentPlan.images : [{ label: currentPlan.floor, image: currentPlan.image }];
+                      
+                      return images.map((img, idx) => (
+                        <div 
+                          key={idx} 
+                          className={`relative h-24 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 ${
+                            activeImageIndex === idx 
+                              ? "border-light-brown shadow-lg" 
+                              : "border-white/10 hover:border-white/30"
+                          }`}
+                          onClick={() => setActiveImageIndex(idx)}
+                        >
+                          <img 
+                            src={img.image} 
+                            alt={img.label}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className={`absolute inset-0 flex items-center justify-center bg-black/40 transition-colors ${
+                            activeImageIndex === idx ? "bg-black/20" : "hover:bg-black/30"
+                          }`}>
+                            <span className={`text-sm font-bold uppercase tracking-wider ${
+                              activeImageIndex === idx ? "text-white" : "text-white/80"
+                            }`}>
+                              {img.label}
+                            </span>
+                          </div>
+                        </div>
+                      ));
+                    })()}
                   </div>
                 </div>
               </div>
@@ -580,11 +632,10 @@ const VillaDetail = () => {
       {/* Image Modal */}
       {isModalOpen && (
         <div 
-          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 md:p-8 animate-fade-in"
-          onClick={() => setIsModalOpen(false)}
+          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex flex-col animate-fade-in"
         >
           <button 
-            className="absolute top-6 right-6 text-white hover:text-light-brown transition-colors z-50 bg-black/50 p-2 rounded-full border border-white/10"
+            className="absolute top-6 right-6 z-[110] text-white hover:text-light-brown transition-colors bg-black/50 p-2 rounded-full border border-white/10"
             onClick={() => setIsModalOpen(false)}
           >
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -594,30 +645,37 @@ const VillaDetail = () => {
           </button>
           
           <div 
-            className="relative w-full max-w-7xl max-h-[90vh] flex items-center justify-center"
-            onClick={(e) => e.stopPropagation()}
+            id="modal-scroll-container"
+            className="w-full h-full overflow-y-auto snap-y snap-mandatory scroll-smooth"
           >
             {(() => {
               const currentPlan = villa.floorPlans[activeFloorIndex];
               const images = Array.isArray(currentPlan.images) ? currentPlan.images : [{ label: currentPlan.floor, image: currentPlan.image }];
-              const currentImage = images[activeImageIndex] || images[0];
               
-              return (
-                <img 
-                  src={currentImage.image} 
-                  alt={currentImage.label || currentPlan.floor}
-                  className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
-                />
-              );
+              return images.map((img, idx) => (
+                <div 
+                  key={idx}
+                  className="w-full h-screen snap-center flex items-center justify-center p-4 md:p-12 relative"
+                >
+                  <img 
+                    src={img.image} 
+                    alt={img.label || currentPlan.floor}
+                    className="max-w-full max-h-full object-contain drop-shadow-2xl"
+                  />
+                  
+                  <div className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md px-6 py-3 rounded-full border border-white/10 text-white font-medium tracking-wide">
+                    {img.label || currentPlan.floor}
+                  </div>
+                  
+                  {/* Visual hint for scrolling */}
+                  {idx < images.length - 1 && (
+                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-white/20 animate-bounce">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </div>
+                  )}
+                </div>
+              ));
             })()}
-            
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 text-white text-sm">
-              {(() => {
-                const currentPlan = villa.floorPlans[activeFloorIndex];
-                const images = Array.isArray(currentPlan.images) ? currentPlan.images : [{ label: currentPlan.floor }];
-                return images[activeImageIndex]?.label || currentPlan.floor;
-              })()}
-            </div>
           </div>
         </div>
       )}
