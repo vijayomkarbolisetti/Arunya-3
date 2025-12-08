@@ -17,7 +17,7 @@ function CameraStats({ onUpdate, controlsRef }) {
       
       // Calculate zoom percentage (inverse of distance, no limits)
       // Using logarithmic scale for better representation across wide range
-      const zoomPercent = Math.max(0, Math.min(100, (1 / distance) * 10));
+      const zoomPercent = Math.max(0, Math.min(500, (1 / distance) * 10));
       
       // Calculate angles
       const vec = new THREE.Vector3();
