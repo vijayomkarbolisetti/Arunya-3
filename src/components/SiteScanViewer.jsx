@@ -15,10 +15,9 @@ function CameraStats({ onUpdate, controlsRef }) {
       const controls = controlsRef.current;
       const distance = camera.position.distanceTo(controls.target);
       
-      // Calculate zoom percentage (inverse of distance, normalized)
-      const minDist = 0.005;
-      const maxDist = 0.5;
-      const zoomPercent = ((maxDist - distance) / (maxDist - minDist)) * 100;
+      // Calculate zoom percentage (inverse of distance, no limits)
+      // Using logarithmic scale for better representation across wide range
+      const zoomPercent = Math.max(0, Math.min(100, (1 / distance) * 10));
       
       // Calculate angles
       const vec = new THREE.Vector3();
@@ -307,8 +306,6 @@ export default function SiteScanViewer({
           rotateSpeed={0.5}
           zoomSpeed={0.8}
           panSpeed={0.8}
-          minDistance={0.005}
-          maxDistance={0.5}
           minPolarAngle={20 * (Math.PI / 180)}
           maxPolarAngle={45 * (Math.PI / 180)}
           enableZoom={enableZoom}
