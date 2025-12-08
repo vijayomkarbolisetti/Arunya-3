@@ -16,8 +16,8 @@ function CameraStats({ onUpdate, controlsRef }) {
       const distance = camera.position.distanceTo(controls.target);
       
       // Calculate zoom percentage (inverse of distance, normalized)
-      const minDist = 30.56;
-      const maxDist = 40.73;
+      const minDist = 0.5;
+      const maxDist = 200;
       const zoomPercent = ((maxDist - distance) / (maxDist - minDist)) * 100;
       
       // Calculate angles
@@ -307,10 +307,10 @@ export default function SiteScanViewer({
           rotateSpeed={0.5}
           zoomSpeed={0.8}
           panSpeed={0.8}
-          minDistance={30.56}
-          maxDistance={40.73}
-          minPolarAngle={17.8 * (Math.PI / 180)}
-          maxPolarAngle={44.5 * (Math.PI / 180)}
+          minDistance={0.5}
+          maxDistance={200}
+          minPolarAngle={0}
+          maxPolarAngle={Math.PI / 2}
           enableZoom={enableZoom}
           enablePan={true}
           mouseButtons={{
