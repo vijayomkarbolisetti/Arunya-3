@@ -262,8 +262,8 @@ export default function SiteScanViewer({
           makeDefault 
           position={[11.2, 21.8, 0.2]} 
           fov={90}
-          near={0.1}
-          far={5000}
+          near={0.0001}
+          far={10000}
         />
         
         {/* Lighting */}
@@ -306,6 +306,8 @@ export default function SiteScanViewer({
           rotateSpeed={0.5}
           zoomSpeed={0.8}
           panSpeed={0.8}
+          minDistance={0.0001}
+          maxDistance={1000}
           minPolarAngle={20 * (Math.PI / 180)}
           maxPolarAngle={45 * (Math.PI / 180)}
           enableZoom={enableZoom}
