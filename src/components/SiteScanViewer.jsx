@@ -28,7 +28,9 @@ function CameraStats({ onUpdate, controlsRef }) {
       const azimuthal = Math.atan2(vec.x, vec.z) * (180 / Math.PI);
       
       // Polar angle (vertical rotation) in degrees
-      const polar = Math.acos(vec.y / distance) * (180 / Math.PI);
+      // Clamp value to [-1, 1] to prevent NaN from floating point precision errors
+      const cosValue = Math.max(-1, Math.min(1, vec.y / distance));
+      const polar = Math.acos(cosValue) * (180 / Math.PI);
       
       onUpdate({
         zoom: Math.max(0, Math.min(100, zoomPercent)),
