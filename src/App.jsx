@@ -20,6 +20,7 @@ import ClubhouseSection from "./sections/ClubhouseSection";
 import CentralParkPage from "./pages/CentralParkPage";
 import CentralParkSection from "./sections/CentralParkSection";
 import ComparisonSection from "./sections/ComparisonSection";
+import SiteScanPage from "./pages/SiteScanPage";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -91,6 +92,7 @@ const App = () => {
         <Route path="/villa/:villaId" element={<VillaDetail />} />
         <Route path="/clubhouse" element={<ClubhousePage />} />
         <Route path="/central-park" element={<CentralParkPage />} />
+        <Route path="/site-scan" element={<SiteScanPage />} />
       </Routes>
     </Router>
   );
