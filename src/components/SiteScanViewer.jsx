@@ -4,6 +4,7 @@ import { OrbitControls, useGLTF, Environment, Grid, PerspectiveCamera, Html } fr
 import * as THREE from 'three';
 import { villaDetails } from '../constants/villaDetails';
 import { useNavigate } from 'react-router-dom';
+import PhoneVerificationPopup from './PhoneVerificationPopup';
 
 /**
  * Camera Stats Component
@@ -257,10 +258,21 @@ function VillaMarker({ position, villaId, onClick, isSelected }) {
 function VillaModal({ villaId, isOpen, onClose }) {
   const villa = villaDetails[villaId];
   const navigate = useNavigate();
+  const [showPhonePopup, setShowPhonePopup] = useState(false);
   
   if (!isOpen || !villa) return null;
   
   const handleViewFullDetails = () => {
+    // Check if phone is verified in localStorage
+    const verified = localStorage.getItem("phoneVerified");
+    
+    if (verified !== "true") {
+      // Show phone popup if not verified
+      setShowPhonePopup(true);
+      return;
+    }
+    
+    // If verified, navigate to villa detail page
     onClose(); // Close modal first
     navigate(`/villa/${villaId}`);
     // Scroll to top after navigation
@@ -269,10 +281,24 @@ function VillaModal({ villaId, isOpen, onClose }) {
     }, 100);
   };
   
+  const handlePhoneSuccess = () => {
+    // Close the modal and navigate after phone verification
+    onClose();
+    navigate(`/villa/${villaId}`);
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+  };
+  
   return (
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
-      onClick={onClose}
+      onClick={() => {
+        // Don't close if phone popup is open
+        if (!showPhonePopup) {
+          onClose();
+        }
+      }}
     >
       <div 
         className="bg-white rounded-lg shadow-2xl max-w-6xl w-full mx-4 max-h-[90vh] overflow-hidden flex flex-col md:flex-row"
@@ -380,6 +406,14 @@ function VillaModal({ villaId, isOpen, onClose }) {
           </div>
         </div>
       </div>
+      
+      {/* Phone Verification Popup - Reusable Component */}
+      <PhoneVerificationPopup
+        isOpen={showPhonePopup}
+        onClose={() => setShowPhonePopup(false)}
+        onSuccess={handlePhoneSuccess}
+        pendingVillaId={villaId}
+      />
     </div>
   );
 }
